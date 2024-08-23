@@ -1,4 +1,4 @@
-import { DialogAddTweet } from '@/app/(home)/add-tweet'
+import { DialogAddTweet } from '@/app/dashboard/(home)/add-tweet'
 import { Avatar } from '@/components/avatar'
 import { Badge } from '@/components/badge'
 import { Divider } from '@/components/divider'

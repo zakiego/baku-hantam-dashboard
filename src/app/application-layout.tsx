@@ -77,6 +77,13 @@ export function ApplicationLayout({
 }) {
   let pathname = usePathname()
 
+  const sidebarItems = [
+    { href: '/dashboard', icon: HomeIcon, label: 'Home' },
+    { href: '/dashboard/topics', icon: Square2StackIcon, label: 'Topics' },
+    { href: '/dashboard/tweets', icon: TicketIcon, label: 'Tweets' },
+    { href: '/dashboard/settings', icon: Cog6ToothIcon, label: 'Settings' },
+  ]
+
   return (
     <SidebarLayout
       navbar={
@@ -125,7 +132,7 @@ export function ApplicationLayout({
           </SidebarHeader>
 
           <SidebarBody>
-            <SidebarSection>
+            {/* <SidebarSection>
               <SidebarItem href="/" current={pathname === '/'}>
                 <HomeIcon />
                 <SidebarLabel>Home</SidebarLabel>
@@ -142,6 +149,14 @@ export function ApplicationLayout({
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
+            </SidebarSection> */}
+            <SidebarSection>
+              {sidebarItems.map((item) => (
+                <SidebarItem key={item.href} href={item.href} current={pathname.startsWith(item.href)}>
+                  <item.icon />
+                  <SidebarLabel>{item.label}</SidebarLabel>
+                </SidebarItem>
+              ))}
             </SidebarSection>
 
             <SidebarSection className="max-lg:hidden">
