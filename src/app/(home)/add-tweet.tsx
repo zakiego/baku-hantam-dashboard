@@ -1,5 +1,6 @@
 'use client'
 
+import { actionAddTweet } from '@/app/actions'
 import { Button } from '@/components/button'
 import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
 import { Field, Label } from '@/components/fieldset'
@@ -8,6 +9,11 @@ import { useState } from 'react'
 
 export function DialogAddTweet() {
   let [isOpen, setIsOpen] = useState(false)
+
+  const handleSubmit = async () => {
+    const resp = await actionAddTweet()
+    alert(resp)
+  }
 
   return (
     <>
@@ -27,7 +33,14 @@ export function DialogAddTweet() {
           <Button plain onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={() => setIsOpen(false)}>Add</Button>
+          <Button
+            onClick={() => {
+              handleSubmit()
+              setIsOpen(false)
+            }}
+          >
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
     </>
