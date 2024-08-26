@@ -1,19 +1,21 @@
-import { getEvents } from '@/data'
-import '@/styles/tailwind.css'
-import type { Metadata } from 'next'
-import type React from 'react'
-import { ApplicationLayout } from './application-layout'
+import { getEvents } from "@/data";
+import "@/styles/tailwind.css";
+import type { Metadata } from "next";
+import type React from "react";
+import { ApplicationLayout } from "./application-layout";
 
 export const metadata: Metadata = {
   title: {
-    template: '%s - Catalyst',
-    default: 'Catalyst',
+    template: "%s - Baku Hantam",
+    default: "Baku Hantam",
   },
-  description: '',
-}
+  description: "",
+};
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  let events = await getEvents()
+export default async function RootLayout({
+  children,
+}: { children: React.ReactNode }) {
+  const events = await getEvents();
 
   return (
     <html
@@ -28,5 +30,5 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ApplicationLayout events={events}>{children}</ApplicationLayout>
       </body>
     </html>
-  )
+  );
 }

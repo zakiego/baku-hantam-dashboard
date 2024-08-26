@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Avatar } from '@/components/avatar'
+import { Avatar } from "@/components/avatar";
 import {
   Dropdown,
   DropdownButton,
@@ -8,8 +8,13 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
-} from '@/components/dropdown'
-import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar'
+} from "@/components/dropdown";
+import {
+  Navbar,
+  NavbarItem,
+  NavbarSection,
+  NavbarSpacer,
+} from "@/components/navbar";
 import {
   Sidebar,
   SidebarBody,
@@ -20,9 +25,9 @@ import {
   SidebarLabel,
   SidebarSection,
   SidebarSpacer,
-} from '@/components/sidebar'
-import { SidebarLayout } from '@/components/sidebar-layout'
-import { getEvents } from '@/data'
+} from "@/components/sidebar";
+import { SidebarLayout } from "@/components/sidebar-layout";
+import type { getEvents } from "@/data";
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
@@ -32,7 +37,7 @@ import {
   PlusIcon,
   ShieldCheckIcon,
   UserCircleIcon,
-} from '@heroicons/react/16/solid'
+} from "@heroicons/react/16/solid";
 import {
   Cog6ToothIcon,
   HomeIcon,
@@ -40,10 +45,13 @@ import {
   SparklesIcon,
   Square2StackIcon,
   TicketIcon,
-} from '@heroicons/react/20/solid'
-import { usePathname } from 'next/navigation'
+} from "@heroicons/react/20/solid";
+import { usePathname } from "next/navigation";
+import { Toaster } from "sonner";
 
-function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' }) {
+function AccountDropdownMenu({
+  anchor,
+}: { anchor: "top start" | "bottom end" }) {
   return (
     <DropdownMenu className="min-w-64" anchor={anchor}>
       <DropdownItem href="#">
@@ -65,24 +73,24 @@ function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' })
         <DropdownLabel>Sign out</DropdownLabel>
       </DropdownItem>
     </DropdownMenu>
-  )
+  );
 }
 
 export function ApplicationLayout({
   events,
   children,
 }: {
-  events: Awaited<ReturnType<typeof getEvents>>
-  children: React.ReactNode
+  events: Awaited<ReturnType<typeof getEvents>>;
+  children: React.ReactNode;
 }) {
-  let pathname = usePathname()
+  const pathname = usePathname();
 
   const sidebarItems = [
-    { href: '/dashboard', icon: HomeIcon, label: 'Home' },
-    { href: '/dashboard/topics', icon: Square2StackIcon, label: 'Topics' },
-    { href: '/dashboard/tweets', icon: TicketIcon, label: 'Tweets' },
-    { href: '/dashboard/settings', icon: Cog6ToothIcon, label: 'Settings' },
-  ]
+    { href: "/dashboard", icon: HomeIcon, label: "Home" },
+    { href: "/dashboard/topics", icon: Square2StackIcon, label: "Topics" },
+    { href: "/dashboard/tweets", icon: TicketIcon, label: "Tweets" },
+    { href: "/dashboard/settings", icon: Cog6ToothIcon, label: "Settings" },
+  ];
 
   return (
     <SidebarLayout
@@ -105,10 +113,13 @@ export function ApplicationLayout({
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <Avatar src="/teams/catalyst.svg" />
-                <SidebarLabel>Catalyst</SidebarLabel>
+                <SidebarLabel>Baku Hantam</SidebarLabel>
                 <ChevronDownIcon />
               </DropdownButton>
-              <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
+              <DropdownMenu
+                className="min-w-80 lg:min-w-64"
+                anchor="bottom start"
+              >
                 <DropdownItem href="/settings">
                   <Cog8ToothIcon />
                   <DropdownLabel>Settings</DropdownLabel>
@@ -119,7 +130,11 @@ export function ApplicationLayout({
                   <DropdownLabel>Catalyst</DropdownLabel>
                 </DropdownItem>
                 <DropdownItem href="#">
-                  <Avatar slot="icon" initials="BE" className="bg-purple-500 text-white" />
+                  <Avatar
+                    slot="icon"
+                    initials="BE"
+                    className="bg-purple-500 text-white"
+                  />
                   <DropdownLabel>Big Events</DropdownLabel>
                 </DropdownItem>
                 <DropdownDivider />
@@ -152,21 +167,25 @@ export function ApplicationLayout({
             </SidebarSection> */}
             <SidebarSection>
               {sidebarItems.map((item) => (
-                <SidebarItem key={item.href} href={item.href} current={pathname.startsWith(item.href)}>
+                <SidebarItem
+                  key={item.href}
+                  href={item.href}
+                  current={pathname.startsWith(item.href)}
+                >
                   <item.icon />
                   <SidebarLabel>{item.label}</SidebarLabel>
                 </SidebarItem>
               ))}
             </SidebarSection>
 
-            <SidebarSection className="max-lg:hidden">
+            {/* <SidebarSection className="max-lg:hidden">
               <SidebarHeading>Upcoming Events</SidebarHeading>
               {events.map((event) => (
                 <SidebarItem key={event.id} href={event.url}>
                   {event.name}
                 </SidebarItem>
               ))}
-            </SidebarSection>
+            </SidebarSection> */}
 
             <SidebarSpacer />
 
@@ -182,13 +201,20 @@ export function ApplicationLayout({
             </SidebarSection>
           </SidebarBody>
 
-          <SidebarFooter className="max-lg:hidden">
+          {/* <SidebarFooter className="max-lg:hidden">
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <span className="flex min-w-0 items-center gap-3">
-                  <Avatar src="/users/erica.jpg" className="size-10" square alt="" />
+                  <Avatar
+                    src="/users/erica.jpg"
+                    className="size-10"
+                    square
+                    alt=""
+                  />
                   <span className="min-w-0">
-                    <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">Erica</span>
+                    <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
+                      Erica
+                    </span>
                     <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
                       erica@example.com
                     </span>
@@ -198,11 +224,12 @@ export function ApplicationLayout({
               </DropdownButton>
               <AccountDropdownMenu anchor="top start" />
             </Dropdown>
-          </SidebarFooter>
+          </SidebarFooter> */}
         </Sidebar>
       }
     >
       {children}
+      <Toaster richColors position="top-center" />
     </SidebarLayout>
-  )
+  );
 }

@@ -4,62 +4,6 @@ export const actionAddTweet = async () => {
   return 'Successfully added tweet'
 }
 
-type Topic = {
-  title: string
-  slug: string
-  description: string
-  createdAt: string
-  updatedAt: string
-  countTweets: number
-}
-
-export const actionGetTopics = async () => {
-  const data: Topic[] = [
-    {
-      title: 'JavaScript Tips',
-      slug: 'javascript-tips',
-      description: 'Latest tips and tricks on JavaScript to improve your coding skills.',
-      createdAt: '2024-08-01T10:30:00Z',
-      updatedAt: '2024-08-15T12:00:00Z',
-      countTweets: 120,
-    },
-    {
-      title: 'Web Development',
-      slug: 'web-development',
-      description: 'All about the latest trends and technologies in web development.',
-      createdAt: '2024-07-20T08:15:00Z',
-      updatedAt: '2024-08-18T09:45:00Z',
-      countTweets: 250,
-    },
-    {
-      title: 'TypeScript Mastery',
-      slug: 'typescript-mastery',
-      description: 'Deep dive into TypeScript for better type safety and cleaner code.',
-      createdAt: '2024-06-25T11:00:00Z',
-      updatedAt: '2024-08-12T14:30:00Z',
-      countTweets: 95,
-    },
-    {
-      title: 'React Hooks',
-      slug: 'react-hooks',
-      description: 'Learn how to use React Hooks effectively in your projects.',
-      createdAt: '2024-07-05T09:45:00Z',
-      updatedAt: '2024-08-20T16:10:00Z',
-      countTweets: 180,
-    },
-    {
-      title: 'OpenTelemetry',
-      slug: 'opentelemetry',
-      description: 'Best practices for setting up tracing and monitoring with OpenTelemetry.',
-      createdAt: '2024-07-30T14:20:00Z',
-      updatedAt: '2024-08-21T17:50:00Z',
-      countTweets: 75,
-    },
-  ]
-
-  return data
-}
-
 type Tweet = {
   content: string
   link: string

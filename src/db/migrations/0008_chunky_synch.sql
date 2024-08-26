@@ -1,0 +1,1 @@
+ALTER TABLE "tweets" ADD COLUMN "tweet_profile_image_url" text;

@@ -1,0 +1,1 @@
+ALTER TABLE "tweets" ALTER COLUMN "tweet_data" SET NOT NULL;

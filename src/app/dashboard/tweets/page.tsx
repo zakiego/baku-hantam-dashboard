@@ -1,56 +1,123 @@
-import { actionGetTweets } from '@/app/actions'
-import { trimUrl } from '@/app/utils/twitter'
-import { Button } from '@/components/button'
-import { Heading } from '@/components/heading'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
-import type { Metadata } from 'next'
+import { actionGetTopics } from "@/app/dashboard/topics/actions";
+import { actionGetTweets } from "@/app/dashboard/tweets/actions";
+import { TableCellActionTweet } from "@/app/dashboard/tweets/components/button";
+import { DialogAddTweet } from "@/app/dashboard/tweets/components/modal";
+import { Avatar } from "@/components/avatar";
+import { Badge, BadgeButton } from "@/components/badge";
+import { Button } from "@/components/button";
+import {
+  Dropdown,
+  DropdownButton,
+  DropdownItem,
+  DropdownMenu,
+} from "@/components/dropdown";
+import { Heading } from "@/components/heading";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/table";
+import { formatDate } from "@/utils/date";
+import { trimUrl } from "@/utils/twitter";
+import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
+import type { Metadata } from "next";
 
-const TITLE = 'Tweets'
+const TITLE = "Tweets";
 
 export const metadata: Metadata = {
   title: TITLE,
-}
+};
 
 type Tweet = {
-  content: string
-  link: string
-  author: string
+  content: string;
+  link: string;
+  author: string;
   topic: {
-    id: number
-    slug: string
-    title: string
-  }
-}
+    id: number;
+    slug: string;
+    title: string;
+  };
+};
 
 export default async function Tweets() {
-  let data = await actionGetTweets()
+  const data = await actionGetTweets();
+  const topics = await actionGetTopics();
+
+  //   export const tweets = pgTable('tweets', {
+  //   id: varchar('id', { length: 26 }).$defaultFn(ulid).primaryKey(),
+
+  //   tweetId: text('tweet_id').notNull().unique(),
+  //   tweetCreatedAt: text('tweet_created_at').notNull(),
+  //   tweetText: text('tweet_text').notNull(),
+  //   tweetUserId: text('tweet_user_id_str').notNull(),
+  //   tweetUserName: text('tweet_user_name').notNull(),
+  //   tweetUserScreenName: text('tweet_user_screen_name').notNull(),
+
+  //   createdAt: timestamp('created_at').notNull().defaultNow(),
+  //   updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  //   cachedAt: timestamp('cached_at').notNull().defaultNow(),
+  //   topicId: varchar('topic_id', { length: 26 }),
+  // })
 
   return (
     <>
       <div className="flex items-end justify-between gap-4">
         <Heading>{TITLE}</Heading>
-        <Button className="-my-0.5">Create tweet</Button>
+        <DialogAddTweet topics={topics} />
       </div>
       <Table className="mt-8 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
         <TableHead>
           <TableRow>
-            <TableHeader>Content</TableHeader>
-            <TableHeader>Link</TableHeader>
             <TableHeader>Author</TableHeader>
+
+            <TableHeader>Tweet</TableHeader>
             <TableHeader>Topic</TableHeader>
+            {/* <TableHeader>Created At</TableHeader>
+            <TableHeader>Updated At</TableHeader>
+            <TableHeader>Cached At</TableHeader> */}
+            <TableHeader className="relative w-0">
+              <span className="sr-only">Actions</span>
+            </TableHeader>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((tweet) => (
-            <TableRow key={tweet.content} href={tweet.link} title={`Tweet #${tweet.content}`}>
-              <TableCell className="text-wrap">{tweet.content}</TableCell>
-              <TableCell>{trimUrl(tweet.link)}</TableCell>
-              <TableCell>{tweet.author}</TableCell>
-              <TableCell>{tweet.topic.title}</TableCell>
+            <TableRow key={tweet.tweetText} title={`Tweet #${tweet.tweetText}`}>
+              <TableCell>
+                <div className="flex">
+                  <Avatar
+                    src={tweet.tweetProfileImageUrl}
+                    alt={tweet.tweetUserName}
+                    className="size-6"
+                  />
+                  <div className="ml-2">{tweet.tweetUserScreenName}</div>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="max-w-xs line-clamp-3 text-wrap">
+                  {tweet.tweetText}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="max-w-xs text-wrap line-clamp-2 break-all">
+                  <BadgeButton href={`/dashboard/topics/${tweet.topic?.id}`}>
+                    {tweet.topic?.title}
+                  </BadgeButton>
+                </div>
+              </TableCell>
+              {/* <TableCell>{tweet.tweetCreatedAt}</TableCell>
+              <TableCell>{formatDate(tweet.updatedAt)}</TableCell>
+              <TableCell>{formatDate(tweet.cachedAt)}</TableCell> */}
+              <TableCell>
+                <TableCellActionTweet id={tweet.tweetId} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </>
-  )
+  );
 }
