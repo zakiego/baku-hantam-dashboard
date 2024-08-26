@@ -1,0 +1,1 @@
+ALTER TABLE "tweets" ALTER COLUMN "tweet_profile_image_url" SET NOT NULL;

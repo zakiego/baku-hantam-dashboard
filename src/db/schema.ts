@@ -11,7 +11,7 @@ export const tweets = pgTable('tweets', {
   tweetUserId: text('tweet_user_id_str').notNull(),
   tweetUserName: text('tweet_user_name').notNull(),
   tweetUserScreenName: text('tweet_user_screen_name').notNull(),
-  tweetProfileImageUrl: text('tweet_profile_image_url'),
+  tweetProfileImageUrl: text('tweet_profile_image_url').notNull(),
 
   tweetData: json('tweet_data').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
