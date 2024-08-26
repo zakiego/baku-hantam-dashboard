@@ -33,6 +33,7 @@ export const actionAddTweet = async (props: SchemaAddTweet) => {
       tweetUserId: tweet.user.id_str,
       tweetUserName: tweet.user.name,
       tweetUserScreenName: tweet.user.screen_name,
+      tweetProfileImageUrl: tweet.user.profile_image_url_https,
       topicId: props.topicId,
       tweetData: tweet,
     })
