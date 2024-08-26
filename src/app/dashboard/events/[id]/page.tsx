@@ -1,4 +1,4 @@
-import { Stat } from '@/app/(home)/page'
+// import { Stat } from '@/app/(home)/page'
 import { Badge } from '@/components/badge'
 import { Button } from '@/components/button'
 import { Heading, Subheading } from '@/components/heading'
@@ -10,7 +10,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  let event = await getEvent(params.id)
+  const event = await getEvent(params.id)
 
   return {
     title: event?.name,
@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 export default async function Event({ params }: { params: { id: string } }) {
-  let event = await getEvent(params.id)
-  let orders = await getEventOrders(params.id)
+  const event = await getEvent(params.id)
+  const orders = await getEventOrders(params.id)
 
   if (!event) {
     notFound()
@@ -54,13 +54,13 @@ export default async function Event({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="mt-8 grid gap-8 sm:grid-cols-3">
-        <Stat title="Total revenue" value={event.totalRevenue} change={event.totalRevenueChange} />
+        {/* <Stat title="Total revenue" value={event.totalRevenue} change={event.totalRevenueChange} />
         <Stat
           title="Tickets sold"
           value={`${event.ticketsSold}/${event.ticketsAvailable}`}
           change={event.ticketsSoldChange}
         />
-        <Stat title="Pageviews" value={event.pageViews} change={event.pageViewsChange} />
+        <Stat title="Pageviews" value={event.pageViews} change={event.pageViewsChange} /> */}
       </div>
       <Subheading className="mt-12">Recent orders</Subheading>
       <Table className="mt-4 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">

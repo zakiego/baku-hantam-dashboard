@@ -1,33 +1,29 @@
-import { DialogAddTweet } from '@/app/dashboard/(home)/add-tweet'
 import { Avatar } from '@/components/avatar'
-import { Badge } from '@/components/badge'
-import { Divider } from '@/components/divider'
 import { Heading } from '@/components/heading'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
 import { getRecentOrders } from '@/data'
 
-export function Stat({ title, value, change }: { title: string; value: string; change: string }) {
-  return (
-    <div>
-      <Divider />
-      <div className="mt-6 text-lg/6 font-medium sm:text-sm/6">{title}</div>
-      <div className="mt-3 text-3xl/8 font-semibold sm:text-2xl/8">{value}</div>
-      <div className="mt-3 text-sm/6 sm:text-xs/6">
-        <Badge color={change.startsWith('+') ? 'lime' : 'pink'}>{change}</Badge>{' '}
-        <span className="text-zinc-500">from last week</span>
-      </div>
-    </div>
-  )
-}
+// export function Stat({ title, value, change }: { title: string; value: string; change: string }) {
+//   return (
+//     <div>
+//       <Divider />
+//       <div className="mt-6 text-lg/6 font-medium sm:text-sm/6">{title}</div>
+//       <div className="mt-3 text-3xl/8 font-semibold sm:text-2xl/8">{value}</div>
+//       <div className="mt-3 text-sm/6 sm:text-xs/6">
+//         <Badge color={change.startsWith('+') ? 'lime' : 'pink'}>{change}</Badge>{' '}
+//         <span className="text-zinc-500">from last week</span>
+//       </div>
+//     </div>
+//   )
+// }
 
 export default async function Home() {
-  let orders = await getRecentOrders()
+  const orders = await getRecentOrders()
 
   return (
     <>
       <div className="flex items-end justify-between gap-4">
         <Heading>Dashboard</Heading>
-        <DialogAddTweet />
       </div>
 
       {/* <div className="mt-8 flex items-end justify-between">
