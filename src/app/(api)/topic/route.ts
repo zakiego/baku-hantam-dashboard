@@ -1,6 +1,6 @@
 import { dbClient } from '@/db'
 
-export async function GET(request: Request) {
+export async function GET() {
   const data = await dbClient.query.topics.findMany({
     where(fields, operators) {
       return operators.eq(fields.isPublic, true)
@@ -9,7 +9,7 @@ export async function GET(request: Request) {
       tweets: {
         columns: {
           id: true,
-          tweetId: true,
+          tweetUserId: true,
           tweetProfileImageUrl: true,
         },
       },
@@ -24,5 +24,19 @@ export async function GET(request: Request) {
     },
   })
 
-  return Response.json({ data })
+  const modifiedData = data.map(({ tweets: peoples, ...rest }) => {
+    const uniquePeoples = peoples.reduce((acc: (typeof data)[number]['tweets'], curr) => {
+      if (!acc.find((item) => item.tweetUserId === curr.tweetUserId)) {
+        acc.push(curr)
+      }
+      return acc
+    }, [])
+
+    return {
+      ...rest,
+      peoples: uniquePeoples,
+    }
+  })
+
+  return Response.json({ data: modifiedData })
 }
