@@ -17,7 +17,6 @@
     "@hookform/resolvers": "^3.9.0",
     "@t3-oss/env-nextjs": "^0.11.1",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "framer-motion": "^11.3.30",
     "next": "14.2.6",
@@ -46,5 +45,8 @@
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.10",
     "typescript": "^5"
+  },
+  "resolutions": {
+    "terser": "5.31.6"
   }
 }
