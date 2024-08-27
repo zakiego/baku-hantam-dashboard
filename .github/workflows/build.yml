@@ -10,7 +10,6 @@ env:
   IMAGE_TAG: latest
   COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK}}
   COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   docker:
@@ -27,8 +26,6 @@ jobs:
           password: ${{ env.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v6
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
         with:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
