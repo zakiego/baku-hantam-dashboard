@@ -24,6 +24,9 @@ export async function GET() {
       updatedAt: true,
       createdAt: true,
     },
+    orderBy(fields, operators) {
+      return operators.desc(fields.updatedAt)
+    },
   })
 
   const modifiedData = data.map(({ tweets: peoples, ...rest }) => {
