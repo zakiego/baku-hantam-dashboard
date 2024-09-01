@@ -1,6 +1,6 @@
 'use server'
 
-import type { SchemaAddTweet } from '@/app/dashboard/tweets/schema'
+import type { SchemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
 import { dbClient, dbSchema } from '@/db'
 import { getTweetId, validateTweetUrl } from '@/utils/twitter'
 import { eq } from 'drizzle-orm'

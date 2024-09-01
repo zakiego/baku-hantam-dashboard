@@ -1,61 +1,42 @@
-"use client";
-import { Listbox, ListboxLabel, ListboxOption } from "@/components/listbox";
+'use client'
+import { Listbox, ListboxLabel, ListboxOption } from '@/components/listbox'
 
-import {
-  actionAddTopic,
-  type actionGetTopicById,
-  type actionGetTopics,
-  actionUpdateTopic,
-} from "@/app/dashboard/topics/actions";
-import {
-  type SchemaAddTopic,
-  schemaAddTopic,
-} from "@/app/dashboard/topics/schema";
-import { actionAddTweet } from "@/app/dashboard/tweets/actions";
-import {
-  type SchemaAddTweet,
-  schemaAddTweet,
-} from "@/app/dashboard/tweets/schema";
-import { Button } from "@/components/button";
-import {
-  Dialog,
-  DialogActions,
-  DialogBody,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/dialog";
-import { ErrorMessage, Field, Label } from "@/components/fieldset";
-import { Input } from "@/components/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import type { actionGetTopics } from '@/app/dashboard/(internal)/topics/actions'
+import { actionAddTweet } from '@/app/dashboard/(internal)/tweets/actions'
+import { type SchemaAddTweet, schemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
+import { Button } from '@/components/button'
+import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
+import { ErrorMessage, Field, Label } from '@/components/fieldset'
+import { Input } from '@/components/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 interface DialogAddTweetProps {
-  topics: Awaited<ReturnType<typeof actionGetTopics>>;
+  topics: Awaited<ReturnType<typeof actionGetTopics>>
 }
 
 export function DialogAddTweet({ topics }: DialogAddTweetProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
-  const { register, handleSubmit, formState, reset, setValue } =
-    useForm<SchemaAddTweet>({
-      resolver: zodResolver(schemaAddTweet),
-      reValidateMode: "onChange",
-    });
+  const { register, handleSubmit, formState, reset, setValue } = useForm<SchemaAddTweet>({
+    resolver: zodResolver(schemaAddTweet),
+    reValidateMode: 'onChange',
+  })
 
   const onSubmit = handleSubmit(async (data) => {
-    const resp = await actionAddTweet(data);
-    console.log(resp);
+    const resp = await actionAddTweet(data)
+    console.log(resp)
     if (!resp.ok) {
-      return toast.error(resp.message);
+      return toast.error(resp.message)
     }
 
-    return toast.success(resp.message);
+    return toast.success(resp.message)
 
     // // reset();
     // alert(JSON.stringify(data));
-  });
+  })
 
   return (
     <>
@@ -65,26 +46,18 @@ export function DialogAddTweet({ topics }: DialogAddTweetProps) {
       <Dialog open={isOpen} onClose={setIsOpen}>
         <DialogTitle>Add Tweet</DialogTitle>
         <DialogDescription>
-          Fill in the details for the new topic you want to add. Make sure the
-          information is clear and concise.
+          Fill in the details for the new topic you want to add. Make sure the information is clear and concise.
         </DialogDescription>
         <DialogBody className="space-y-4">
           <Field>
             <Label>URL</Label>
-            <Input placeholder="Enter the tweet URL" {...register("url")} />
-            {formState.errors.url?.message && (
-              <ErrorMessage>
-                {formState.errors.url?.message.toString()}
-              </ErrorMessage>
-            )}
+            <Input placeholder="Enter the tweet URL" {...register('url')} />
+            {formState.errors.url?.message && <ErrorMessage>{formState.errors.url?.message.toString()}</ErrorMessage>}
           </Field>
 
           <Field>
             <Label>Topics</Label>
-            <Listbox
-              name="status"
-              onChange={(value) => setValue("topicId", value as string)}
-            >
+            <Listbox name="status" onChange={(value) => setValue('topicId', value as string)}>
               {topics.map((topic) => (
                 <ListboxOption key={topic.id} value={topic.id}>
                   <ListboxLabel>{topic.title}</ListboxLabel>
@@ -136,16 +109,16 @@ export function DialogAddTweet({ topics }: DialogAddTweetProps) {
           <Button
             disabled={!formState.isValid || formState.isSubmitting}
             onClick={() => {
-              onSubmit();
-              setIsOpen(false);
+              onSubmit()
+              setIsOpen(false)
             }}
           >
-            {formState.isSubmitting ? "Adding..." : "Submit"}
+            {formState.isSubmitting ? 'Adding...' : 'Submit'}
           </Button>
         </DialogActions>
       </Dialog>
     </>
-  );
+  )
 }
 
 // interface DialogEditTopicProps {

@@ -1,45 +1,30 @@
-import { actionGetTopicById } from "@/app/dashboard/topics/actions";
-import { DialogEditTopic } from "@/app/dashboard/topics/components/add-topic";
-import { ButtonDeleteTopic } from "@/app/dashboard/topics/components/button";
-import { Avatar } from "@/components/avatar";
-import { Badge } from "@/components/badge";
-import { Button } from "@/components/button";
-import {
-  DescriptionDetails,
-  DescriptionList,
-  DescriptionTerm,
-} from "@/components/description-list";
-import { Divider } from "@/components/divider";
-import { Heading, Subheading } from "@/components/heading";
-import { Link } from "@/components/link";
-import { Slug } from "@/components/slug";
-import { getOrder } from "@/data";
-import { formatDate } from "@/utils/date";
-import {
-  BanknotesIcon,
-  CalendarIcon,
-  ChevronLeftIcon,
-  CreditCardIcon,
-} from "@heroicons/react/16/solid";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { RefundOrder } from "./refund";
+import { actionGetTopicById } from '@/app/dashboard/(internal)/topics/actions'
+import { DialogEditTopic } from '@/app/dashboard/(internal)/topics/components/add-topic'
+import { ButtonDeleteTopic } from '@/app/dashboard/(internal)/topics/components/button'
+import { Badge } from '@/components/badge'
+import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/description-list'
+import { Divider } from '@/components/divider'
+import { Heading, Subheading } from '@/components/heading'
+import { Link } from '@/components/link'
+import { Slug } from '@/components/slug'
+import { formatDate } from '@/utils/date'
+import { CalendarIcon, ChevronLeftIcon } from '@heroicons/react/16/solid'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
-export async function generateMetadata({
-  params,
-}: { params: { id: string } }): Promise<Metadata> {
-  const topic = await actionGetTopicById(params.id);
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const topic = await actionGetTopicById(params.id)
 
   return {
     title: topic && `Topic: ${topic.title}`,
-  };
+  }
 }
 
 export default async function Order({ params }: { params: { id: string } }) {
-  const topic = await actionGetTopicById(params.id);
+  const topic = await actionGetTopicById(params.id)
 
   if (!topic) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -150,5 +135,5 @@ export default async function Order({ params }: { params: { id: string } }) {
         </DescriptionList>
       </div> */}
     </>
-  );
+  )
 }

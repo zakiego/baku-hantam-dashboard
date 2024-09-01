@@ -71,6 +71,27 @@
       "when": 1724702543332,
       "tag": "0009_needy_supernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1725209378386,
+      "tag": "0010_busy_mongu",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1725209484606,
+      "tag": "0011_puzzling_queen_noir",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1725210603420,
+      "tag": "0012_stale_magneto",
+      "breakpoints": true
     }
   ]
 }

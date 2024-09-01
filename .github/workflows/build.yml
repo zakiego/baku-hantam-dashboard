@@ -10,7 +10,8 @@ env:
   IMAGE_TAG: latest
   COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK}}
   COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DATABASE_URL: test
+  AUTH_SECRET: test
 
 jobs:
   docker:

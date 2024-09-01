@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Avatar } from "@/components/avatar";
+import { Avatar } from '@/components/avatar'
 import {
   Dropdown,
   DropdownButton,
@@ -8,89 +8,73 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
-} from "@/components/dropdown";
-import {
-  Navbar,
-  NavbarItem,
-  NavbarSection,
-  NavbarSpacer,
-} from "@/components/navbar";
+} from '@/components/dropdown'
+import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar'
 import {
   Sidebar,
   SidebarBody,
   SidebarFooter,
   SidebarHeader,
-  SidebarHeading,
   SidebarItem,
   SidebarLabel,
   SidebarSection,
-  SidebarSpacer,
-} from "@/components/sidebar";
-import { SidebarLayout } from "@/components/sidebar-layout";
-import type { getEvents } from "@/data";
+} from '@/components/sidebar'
+import { SidebarLayout } from '@/components/sidebar-layout'
+import type { getEvents } from '@/data'
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   Cog8ToothIcon,
-  LightBulbIcon,
   PlusIcon,
-  ShieldCheckIcon,
-  UserCircleIcon,
-} from "@heroicons/react/16/solid";
-import {
-  Cog6ToothIcon,
-  HomeIcon,
-  QuestionMarkCircleIcon,
-  SparklesIcon,
-  Square2StackIcon,
-  TicketIcon,
-} from "@heroicons/react/20/solid";
-import { usePathname } from "next/navigation";
-import { Toaster } from "sonner";
+} from '@heroicons/react/16/solid'
+import { Cog6ToothIcon, HomeIcon, Square2StackIcon, TicketIcon } from '@heroicons/react/20/solid'
+import { signOut, useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
+import { Toaster } from 'sonner'
 
-function AccountDropdownMenu({
-  anchor,
-}: { anchor: "top start" | "bottom end" }) {
+function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' }) {
   return (
     <DropdownMenu className="min-w-64" anchor={anchor}>
-      <DropdownItem href="#">
+      {/* <DropdownItem href="#">
         <UserCircleIcon />
         <DropdownLabel>My account</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem href="#">
+      </DropdownItem> */}
+      {/* <DropdownDivider /> */}
+      {/* <DropdownItem href="#">
         <ShieldCheckIcon />
         <DropdownLabel>Privacy policy</DropdownLabel>
-      </DropdownItem>
-      <DropdownItem href="#">
+      </DropdownItem> */}
+      {/* <DropdownItem href="#">
         <LightBulbIcon />
         <DropdownLabel>Share feedback</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem href="#">
+      </DropdownItem> */}
+      {/* <DropdownDivider /> */}
+      <DropdownItem onClick={() => signOut()}>
         <ArrowRightStartOnRectangleIcon />
         <DropdownLabel>Sign out</DropdownLabel>
       </DropdownItem>
     </DropdownMenu>
-  );
+  )
 }
 
 export function ApplicationLayout({
   events,
   children,
 }: {
-  events: Awaited<ReturnType<typeof getEvents>>;
-  children: React.ReactNode;
+  events: Awaited<ReturnType<typeof getEvents>>
+  children: React.ReactNode
 }) {
-  const pathname = usePathname();
+  const session = useSession()
+
+  const pathname = usePathname()
 
   const sidebarItems = [
-    { href: "/dashboard", icon: HomeIcon, label: "Home" },
-    { href: "/dashboard/topics", icon: Square2StackIcon, label: "Topics" },
-    { href: "/dashboard/tweets", icon: TicketIcon, label: "Tweets" },
-    { href: "/dashboard/settings", icon: Cog6ToothIcon, label: "Settings" },
-  ];
+    { href: '/dashboard', icon: HomeIcon, label: 'Home' },
+    { href: '/dashboard/topics', icon: Square2StackIcon, label: 'Topics' },
+    { href: '/dashboard/tweets', icon: TicketIcon, label: 'Tweets' },
+    { href: '/dashboard/settings', icon: Cog6ToothIcon, label: 'Settings' },
+  ]
 
   return (
     <SidebarLayout
@@ -100,7 +84,7 @@ export function ApplicationLayout({
           <NavbarSection>
             <Dropdown>
               <DropdownButton as={NavbarItem}>
-                <Avatar src="/users/erica.jpg" square />
+                <Avatar className="size-10" initials={session.data?.user?.name?.slice(0, 2)} square />
               </DropdownButton>
               <AccountDropdownMenu anchor="bottom end" />
             </Dropdown>
@@ -116,10 +100,7 @@ export function ApplicationLayout({
                 <SidebarLabel>Baku Hantam</SidebarLabel>
                 <ChevronDownIcon />
               </DropdownButton>
-              <DropdownMenu
-                className="min-w-80 lg:min-w-64"
-                anchor="bottom start"
-              >
+              <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
                 <DropdownItem href="/settings">
                   <Cog8ToothIcon />
                   <DropdownLabel>Settings</DropdownLabel>
@@ -130,11 +111,7 @@ export function ApplicationLayout({
                   <DropdownLabel>Catalyst</DropdownLabel>
                 </DropdownItem>
                 <DropdownItem href="#">
-                  <Avatar
-                    slot="icon"
-                    initials="BE"
-                    className="bg-purple-500 text-white"
-                  />
+                  <Avatar slot="icon" initials="BE" className="bg-purple-500 text-white" />
                   <DropdownLabel>Big Events</DropdownLabel>
                 </DropdownItem>
                 <DropdownDivider />
@@ -167,11 +144,7 @@ export function ApplicationLayout({
             </SidebarSection> */}
             <SidebarSection>
               {sidebarItems.map((item) => (
-                <SidebarItem
-                  key={item.href}
-                  href={item.href}
-                  current={pathname.startsWith(item.href)}
-                >
+                <SidebarItem key={item.href} href={item.href} current={pathname.startsWith(item.href)}>
                   <item.icon />
                   <SidebarLabel>{item.label}</SidebarLabel>
                 </SidebarItem>
@@ -187,9 +160,9 @@ export function ApplicationLayout({
               ))}
             </SidebarSection> */}
 
-            <SidebarSpacer />
+            {/* <SidebarSpacer /> */}
 
-            <SidebarSection>
+            {/* <SidebarSection>
               <SidebarItem href="#">
                 <QuestionMarkCircleIcon />
                 <SidebarLabel>Support</SidebarLabel>
@@ -198,38 +171,33 @@ export function ApplicationLayout({
                 <SparklesIcon />
                 <SidebarLabel>Changelog</SidebarLabel>
               </SidebarItem>
-            </SidebarSection>
+            </SidebarSection> */}
           </SidebarBody>
 
-          {/* <SidebarFooter className="max-lg:hidden">
+          <SidebarFooter className="max-lg:hidden">
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <span className="flex min-w-0 items-center gap-3">
-                  <Avatar
-                    src="/users/erica.jpg"
-                    className="size-10"
-                    square
-                    alt=""
-                  />
+                  <Avatar className="size-10" initials={session.data?.user?.name?.slice(0, 2)} square />
                   <span className="min-w-0">
                     <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
-                      Erica
+                      {session.data?.user?.name}
                     </span>
-                    <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
+                    {/* <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
                       erica@example.com
-                    </span>
+                    </span> */}
                   </span>
                 </span>
                 <ChevronUpIcon />
               </DropdownButton>
               <AccountDropdownMenu anchor="top start" />
             </Dropdown>
-          </SidebarFooter> */}
+          </SidebarFooter>
         </Sidebar>
       }
     >
       {children}
       <Toaster richColors position="top-center" />
     </SidebarLayout>
-  );
+  )
 }

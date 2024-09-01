@@ -20,6 +20,15 @@ import { getRecentOrders } from '@/data'
 export default async function Home() {
   const orders = await getRecentOrders()
 
+  // const passwd = await saltAndHashPassword('passwod')
+  // await dbClient.insert(dbSchema.users).values({
+  //   name: 'Zakiego',
+  //   username: 'zakiego',
+  //   password: passwd,
+  //   level: 'super',
+  //   isVerified: true,
+  // })
+
   return (
     <>
       <div className="flex items-end justify-between gap-4">

@@ -1,47 +1,28 @@
-import {
-  actionGetTweetById,
-  refreshTweetByTweetId,
-} from "@/app/dashboard/tweets/actions";
-import { ButtonUpdateTweet } from "@/app/dashboard/tweets/components/button";
-import { Avatar } from "@/components/avatar";
-import { Badge } from "@/components/badge";
-import { Button } from "@/components/button";
-import {
-  DescriptionDetails,
-  DescriptionList,
-  DescriptionTerm,
-} from "@/components/description-list";
-import { Divider } from "@/components/divider";
-import { Heading, Subheading } from "@/components/heading";
-import { Link } from "@/components/link";
-import { getOrder } from "@/data";
-import { formatDate } from "@/utils/date";
-import {
-  BanknotesIcon,
-  CalendarIcon,
-  ChevronLeftIcon,
-  CreditCardIcon,
-} from "@heroicons/react/16/solid";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { toast } from "sonner";
-import { RefundOrder } from "./refund";
+import { actionGetTweetById } from '@/app/dashboard/(internal)/tweets/actions'
+import { ButtonUpdateTweet } from '@/app/dashboard/(internal)/tweets/components/button'
+import { Avatar } from '@/components/avatar'
+import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/description-list'
+import { Divider } from '@/components/divider'
+import { Heading, Subheading } from '@/components/heading'
+import { Link } from '@/components/link'
+import { formatDate } from '@/utils/date'
+import { ChevronLeftIcon } from '@heroicons/react/16/solid'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
-export async function generateMetadata({
-  params,
-}: { params: { id: string } }): Promise<Metadata> {
-  const tweet = await actionGetTweetById(params.id);
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const tweet = await actionGetTweetById(params.id)
 
   return {
     title: tweet && `Tweet by ${tweet.tweetUserScreenName}`,
-  };
+  }
 }
 
 export default async function Order({ params }: { params: { id: string } }) {
-  const tweet = await actionGetTweetById(params.id);
+  const tweet = await actionGetTweetById(params.id)
 
   if (!tweet) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -95,11 +76,7 @@ export default async function Order({ params }: { params: { id: string } }) {
           <DescriptionTerm>Author</DescriptionTerm>
           <DescriptionDetails>
             <div className="flex">
-              <Avatar
-                src={tweet.tweetProfileImageUrl}
-                alt={tweet.tweetUserName}
-                className="size-6"
-              />
+              <Avatar src={tweet.tweetProfileImageUrl} alt={tweet.tweetUserName} className="size-6" />
               <p className="ml-2">{tweet.tweetUserName}</p>
             </div>
           </DescriptionDetails>
@@ -110,18 +87,12 @@ export default async function Order({ params }: { params: { id: string } }) {
           <DescriptionDetails>{tweet.tweetText}</DescriptionDetails>
           <DescriptionTerm>Link</DescriptionTerm>
           <DescriptionDetails>
-            <Link
-              href={`https://twitter.com/${tweet.tweetUserScreenName}/status/${tweet.tweetId}`}
-            >
-              View tweet
-            </Link>
+            <Link href={`https://twitter.com/${tweet.tweetUserScreenName}/status/${tweet.tweetId}`}>View tweet</Link>
           </DescriptionDetails>
 
           <DescriptionTerm>Topic</DescriptionTerm>
           <DescriptionDetails>
-            <Link href={`/dashboard/topics/${tweet.topic?.id}`}>
-              {tweet.topic?.title}
-            </Link>
+            <Link href={`/dashboard/topics/${tweet.topic?.id}`}>{tweet.topic?.title}</Link>
           </DescriptionDetails>
 
           <DescriptionTerm>Updated At</DescriptionTerm>
@@ -147,10 +118,8 @@ export default async function Order({ params }: { params: { id: string } }) {
 
           <DescriptionTerm>Data</DescriptionTerm>
           <DescriptionDetails>
-            <div className="bg-zinc-900 text-xs break-all rounded-md px-5 py-5 leading-relaxed">
-              <code className="text-white">
-                {JSON.stringify(tweet.tweetData, null, 2)}
-              </code>
+            <div className="break-all rounded-md bg-zinc-900 px-5 py-5 text-xs leading-relaxed">
+              <code className="text-white">{JSON.stringify(tweet.tweetData, null, 2)}</code>
             </div>
           </DescriptionDetails>
         </DescriptionList>
@@ -187,5 +156,5 @@ export default async function Order({ params }: { params: { id: string } }) {
         </DescriptionList>
       </div> */}
     </>
-  );
+  )
 }

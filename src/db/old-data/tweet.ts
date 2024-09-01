@@ -1,4 +1,4 @@
-import type { SchemaAddTweet } from '@/app/dashboard/tweets/schema'
+import type { SchemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
 import { dbClient, dbSchema } from '@/db'
 import { OLD_DATA } from '@/db/old-data/data'
 import { createSlug } from '@/utils/string'

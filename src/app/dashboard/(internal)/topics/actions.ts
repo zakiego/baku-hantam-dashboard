@@ -1,6 +1,6 @@
 'use server'
 
-import type { SchemaAddTopic } from '@/app/dashboard/topics/schema'
+import type { SchemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
 import { dbClient, dbSchema } from '@/db'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
