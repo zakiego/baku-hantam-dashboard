@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { dbClient } from '@/db'
 
 export async function GET() {
