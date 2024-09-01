@@ -50,7 +50,14 @@ function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' })
         <DropdownLabel>Share feedback</DropdownLabel>
       </DropdownItem> */}
       {/* <DropdownDivider /> */}
-      <DropdownItem onClick={() => signOut()}>
+      <DropdownItem
+        onClick={() =>
+          signOut({
+            redirect: true,
+            callbackUrl: '/dashboard/login',
+          })
+        }
+      >
         <ArrowRightStartOnRectangleIcon />
         <DropdownLabel>Sign out</DropdownLabel>
       </DropdownItem>

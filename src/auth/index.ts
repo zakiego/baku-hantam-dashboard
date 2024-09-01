@@ -1,4 +1,5 @@
 import { dbClient } from '@/db'
+import { ENV } from '@/lib/env'
 import { verifyPassword } from '@/utils/hash'
 import NextAuth, { type DefaultSession } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
@@ -31,8 +32,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        console.log({ credentials })
-
         const user = await dbClient.query.users.findFirst({
           where(fields, operators) {
             return operators.eq(fields.username, credentials.username as string)
@@ -64,4 +63,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+
+  secret: ENV.AUTH_SECRET,
 })
