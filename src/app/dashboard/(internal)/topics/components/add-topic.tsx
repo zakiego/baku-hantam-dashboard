@@ -90,6 +90,7 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
       title: props.data.title,
       slug: props.data.slug,
       description: props.data.description,
+      createdAt: props.data.createdAt.toISOString().split('T')[0],
     },
   })
 
@@ -129,6 +130,14 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             <Input placeholder="Briefly describe the topic" {...register('description')} />
             {formState.errors.description?.message && (
               <ErrorMessage>{formState.errors.description?.message.toString()}</ErrorMessage>
+            )}
+          </Field>
+
+          <Field>
+            <Label>Created At</Label>
+            <Input type="date" placeholder="Enter the date the topic was created" {...register('createdAt')} />
+            {formState.errors.createdAt?.message && (
+              <ErrorMessage>{formState.errors.createdAt?.message.toString()}</ErrorMessage>
             )}
           </Field>
         </DialogBody>

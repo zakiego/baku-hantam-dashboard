@@ -27,6 +27,7 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
       title: props.title,
       slug: props.title.toLowerCase().replace(/\s/g, '-'),
       description: props.description,
+      ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
     })
     .where(eq(dbSchema.topics.id, id))
 
