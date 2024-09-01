@@ -10,8 +10,10 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-l
 
 FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-ENV DATABASE_URL=secret
-ENV AUTH_SECRET=secret
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ARG AUTH_SECRET
+ENV AUTH_SECRET=${AUTH_SECRET}
 RUN pnpm run build
 
 FROM base

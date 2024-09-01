@@ -10,6 +10,8 @@ env:
   IMAGE_TAG: latest
   COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK}}
   COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
 
 jobs:
   docker:
@@ -29,6 +31,9 @@ jobs:
         with:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          build-args: |
+            DATABASE_URL=${{ env.DATABASE_URL }}
+            AUTH_SECRET=${{ env.AUTH_SECRET }}
 
   coolify:
     runs-on: ubuntu-latest
