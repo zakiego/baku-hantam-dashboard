@@ -1,4 +1,4 @@
-import { actionGetTweetById } from '@/app/dashboard/(internal)/tweets/actions'
+import { actionGetTweetByTweetId } from '@/app/dashboard/(internal)/tweets/actions'
 import { ButtonUpdateTweet } from '@/app/dashboard/(internal)/tweets/components/button'
 import { Avatar } from '@/components/avatar'
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/description-list'
@@ -9,9 +9,10 @@ import { formatDate } from '@/utils/date'
 import { ChevronLeftIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-
+import { EmbeddedTweet } from 'react-tweet'
+import type { Tweet } from 'react-tweet/api'
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const tweet = await actionGetTweetById(params.id)
+  const tweet = await actionGetTweetByTweetId(params.id)
 
   return {
     title: tweet && `Tweet by ${tweet.tweetUserScreenName}`,
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 export default async function Order({ params }: { params: { id: string } }) {
-  const tweet = await actionGetTweetById(params.id)
+  const tweet = await actionGetTweetByTweetId(params.id)
 
   if (!tweet) {
     notFound()
@@ -114,6 +115,11 @@ export default async function Order({ params }: { params: { id: string } }) {
             {formatDate(tweet.cachedAt, {
               time: true,
             })}
+          </DescriptionDetails>
+
+          <DescriptionTerm>Preview</DescriptionTerm>
+          <DescriptionDetails>
+            <EmbeddedTweet tweet={tweet.tweetData as Tweet} />
           </DescriptionDetails>
 
           <DescriptionTerm>Data</DescriptionTerm>
