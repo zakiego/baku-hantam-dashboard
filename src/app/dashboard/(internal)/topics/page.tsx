@@ -1,8 +1,9 @@
 import { actionGetTopics } from '@/app/dashboard/(internal)/topics/actions'
-import { DialogAddTopic } from '@/app/dashboard/(internal)/topics/components/add-topic'
+import { DialogAddTopic } from '@/app/dashboard/(internal)/topics/components/dialog'
 import { Heading } from '@/components/heading'
 import { Slug } from '@/components/slug'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
+import { formatDate } from '@/utils/date'
 import type { Metadata } from 'next'
 
 const TITLE = 'Topics'
@@ -25,9 +26,9 @@ export default async function Topics() {
           <TableRow>
             <TableHeader>Title</TableHeader>
             <TableHeader>Slug</TableHeader>
-            <TableHeader>Description</TableHeader>
-            {/* <TableHeader>Created at</TableHeader>
-            <TableHeader>Updated at</TableHeader> */}
+            {/* <TableHeader>Description</TableHeader> */}
+            <TableHeader>Created at</TableHeader>
+            {/* <TableHeader>Updated at</TableHeader> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,11 +42,11 @@ export default async function Topics() {
                   <Slug href={`/dashboard/topics/${topic.id}`}>{topic.slug}</Slug>
                 </div>
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <div className="line-clamp-2 max-w-xs text-wrap">{topic.description}</div>
-              </TableCell>
-              {/* <TableCell>{formatDate(topic.createdAt)}</TableCell>
-              <TableCell>{formatDate(topic.updatedAt)}</TableCell> */}
+              </TableCell> */}
+              <TableCell>{formatDate(topic.createdAt)}</TableCell>
+              {/* <TableCell>{formatDate(topic.updatedAt)}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
