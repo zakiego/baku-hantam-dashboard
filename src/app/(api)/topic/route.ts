@@ -13,6 +13,9 @@ export async function GET() {
           id: true,
           tweetUserId: true,
           tweetProfileImageUrl: true,
+          quotedTweetId: true,
+          quotedTweetUserId: true,
+          quotedTweetUserProfileImageUrl: true,
         },
       },
     },
@@ -30,12 +33,32 @@ export async function GET() {
   })
 
   const modifiedData = data.map(({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
-    const uniquePeoples = peoples.reduce((acc: (typeof data)[number]['tweets'], curr) => {
-      if (!acc.find((item) => item.tweetUserId === curr.tweetUserId)) {
-        acc.push(curr)
+    const allPeoples: {
+      id: string
+      user_id: string
+      profile_image_url: string
+    }[] = []
+
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    peoples.forEach((item) => {
+      allPeoples.push({
+        id: item.id,
+        user_id: item.tweetUserId,
+        profile_image_url: item.tweetProfileImageUrl,
+      })
+
+      if (item.quotedTweetId && item.quotedTweetUserId && item.quotedTweetUserProfileImageUrl) {
+        allPeoples.push({
+          id: item.quotedTweetId,
+          user_id: item.quotedTweetUserId,
+          profile_image_url: item.quotedTweetUserProfileImageUrl,
+        })
       }
-      return acc
-    }, [])
+    })
+
+    const uniquePeoples = allPeoples.filter(
+      (item, index, self) => self.findIndex((t) => t.user_id === item.user_id) === index
+    )
 
     return {
       ...rest,
