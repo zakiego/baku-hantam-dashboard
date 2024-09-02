@@ -3,6 +3,7 @@
 import { refreshTweetByTweetId } from '@/app/dashboard/(internal)/tweets/actions'
 import { Button } from '@/components/button'
 import { ArrowPathIcon, EyeIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -34,10 +35,12 @@ export const ButtonUpdateTweet = (props: ButtonUpdateTweetProps) => {
 export const TableCellActionTweet = (props: { id: string }) => {
   return (
     <div className="-mx-3 -my-1.5 flex space-x-1 !text-xs sm:-mx-2.5">
-      <Button outline>
-        <EyeIcon className="h-2 w-2" />
-        View
-      </Button>
+      <Link href={`/dashboard/tweets/${props.id}`}>
+        <Button outline>
+          <EyeIcon className="h-2 w-2" />
+          View
+        </Button>
+      </Link>
       <Button
         outline
         onClick={async () => {

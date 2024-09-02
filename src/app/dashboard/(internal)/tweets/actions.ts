@@ -89,10 +89,10 @@ export const actionGetTweetsByTopicId = async (topicId: string) => {
   return data
 }
 
-export const actionGetTweetById = async (id: string) => {
+export const actionGetTweetByTweetId = async (id: string) => {
   const data = await dbClient.query.tweets.findFirst({
     where(fields, operators) {
-      return operators.eq(fields.id, id)
+      return operators.eq(fields.tweetId, id)
     },
     with: {
       topic: {
