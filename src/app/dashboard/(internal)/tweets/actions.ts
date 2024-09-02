@@ -67,6 +67,28 @@ export const actionGetTweets = async () => {
   return data
 }
 
+export const actionGetTweetsByTopicId = async (topicId: string) => {
+  const data = await dbClient.query.tweets.findMany({
+    with: {
+      topic: {
+        columns: {
+          id: true,
+          title: true,
+          slug: true,
+        },
+      },
+    },
+    where(fields, operators) {
+      return operators.eq(fields.topicId, topicId)
+    },
+    orderBy(fields, operators) {
+      return operators.desc(fields.tweetCreatedAt)
+    },
+  })
+
+  return data
+}
+
 export const actionGetTweetById = async (id: string) => {
   const data = await dbClient.query.tweets.findFirst({
     where(fields, operators) {
