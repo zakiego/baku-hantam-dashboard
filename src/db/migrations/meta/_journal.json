@@ -92,6 +92,13 @@
       "when": 1725210603420,
       "tag": "0012_stale_magneto",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1725302410928,
+      "tag": "0013_tricky_chimera",
+      "breakpoints": true
     }
   ]
 }

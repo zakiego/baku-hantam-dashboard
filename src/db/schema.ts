@@ -13,6 +13,14 @@ export const tweets = pgTable('tweets', {
   tweetUserScreenName: text('tweet_user_screen_name').notNull(),
   tweetProfileImageUrl: text('tweet_profile_image_url').notNull(),
 
+  quotedTweetUserId: text('quoted_tweet user_id_str'),
+  quotedTweetUserName: text('quoted_tweet_user_name'),
+  quotedTweetUserScreenName: text('quoted_tweet_user_screen_name'),
+  quotedTweetUserProfileImageUrl: text('quoted_tweet_user_profile_image_url'),
+  quotedTweetText: text('quoted_tweet_text'),
+  quotedTweetCreatedAt: text('quoted_tweet_created_at'),
+  quotedTweetId: text('quoted_tweet_id'),
+
   tweetData: json('tweet_data').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
