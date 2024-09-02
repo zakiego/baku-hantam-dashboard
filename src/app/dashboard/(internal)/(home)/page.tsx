@@ -2,6 +2,7 @@ import { Avatar } from '@/components/avatar'
 import { Heading } from '@/components/heading'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
 import { getRecentOrders } from '@/data'
+import { redirect } from 'next/navigation'
 
 // export function Stat({ title, value, change }: { title: string; value: string; change: string }) {
 //   return (
@@ -18,6 +19,7 @@ import { getRecentOrders } from '@/data'
 // }
 
 export default async function Home() {
+  redirect('/dashboard/topics')
   const orders = await getRecentOrders()
 
   // const passwd = await saltAndHashPassword('passwod')
