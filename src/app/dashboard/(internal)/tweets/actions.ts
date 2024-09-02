@@ -1,9 +1,9 @@
 'use server'
 
 import type { SchemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
-import { dbClient, dbSchema } from '@/db'
+import { dbClient } from '@/db'
+import { insertNewTweet, refreshTweets } from '@/utils/tweet'
 import { getTweetId, validateTweetUrl } from '@/utils/twitter'
-import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { getTweet } from 'react-tweet/api'
 
@@ -25,20 +25,7 @@ export const actionAddTweet = async (props: SchemaAddTweet) => {
     }
   }
 
-  const data = await dbClient
-    .insert(dbSchema.tweets)
-    .values({
-      tweetId: tweet.id_str,
-      tweetCreatedAt: tweet.created_at,
-      tweetText: tweet.text,
-      tweetUserId: tweet.user.id_str,
-      tweetUserName: tweet.user.name,
-      tweetUserScreenName: tweet.user.screen_name,
-      tweetProfileImageUrl: tweet.user.profile_image_url_https,
-      topicId: props.topicId,
-      tweetData: tweet,
-    })
-    .returning()
+  const data = await insertNewTweet({ tweet, topicId: props.topicId })
 
   revalidatePath('/dashboard/tweets', 'page')
 
@@ -131,18 +118,7 @@ export const refreshTweetByTweetId = async (id: string) => {
     }
   }
 
-  const data = await dbClient
-    .update(dbSchema.tweets)
-    .set({
-      tweetText: resp.text,
-      tweetCreatedAt: resp.created_at,
-      tweetUserName: resp.user.name,
-      tweetUserScreenName: resp.user.screen_name,
-      tweetProfileImageUrl: resp.user.profile_image_url_https,
-      tweetData: resp,
-      updatedAt: new Date(),
-    })
-    .where(eq(dbSchema.tweets.tweetId, id))
+  const data = await refreshTweets({ tweet: resp })
 
   revalidatePath(`/dashboard/tweets/${id}`)
   revalidatePath('/dashboard/tweets', 'page')
