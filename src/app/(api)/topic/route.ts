@@ -29,7 +29,7 @@ export async function GET() {
     },
   })
 
-  const modifiedData = data.map(({ tweets: peoples, ...rest }) => {
+  const modifiedData = data.map(({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
     const uniquePeoples = peoples.reduce((acc: (typeof data)[number]['tweets'], curr) => {
       if (!acc.find((item) => item.tweetUserId === curr.tweetUserId)) {
         acc.push(curr)
@@ -39,6 +39,9 @@ export async function GET() {
 
     return {
       ...rest,
+      tweets_count: peoples.length,
+      update_at: updatedAt,
+      create_at: createdAt,
       peoples: uniquePeoples,
     }
   })
