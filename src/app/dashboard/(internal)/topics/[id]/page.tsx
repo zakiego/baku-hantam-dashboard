@@ -1,12 +1,16 @@
 import { actionGetTopicById } from '@/app/dashboard/(internal)/topics/actions'
-import { DialogEditTopic } from '@/app/dashboard/(internal)/topics/components/add-topic'
 import { ButtonDeleteTopic } from '@/app/dashboard/(internal)/topics/components/button'
+import { DialogEditTopic } from '@/app/dashboard/(internal)/topics/components/dialog'
+import { actionGetTweetsByTopicId } from '@/app/dashboard/(internal)/tweets/actions'
+import { TableCellActionTweet } from '@/app/dashboard/(internal)/tweets/components/button'
+import { Avatar } from '@/components/avatar'
 import { Badge } from '@/components/badge'
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/description-list'
 import { Divider } from '@/components/divider'
 import { Heading, Subheading } from '@/components/heading'
 import { Link } from '@/components/link'
 import { Slug } from '@/components/slug'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
 import { formatDate } from '@/utils/date'
 import { CalendarIcon, ChevronLeftIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
@@ -22,6 +26,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
 export default async function Order({ params }: { params: { id: string } }) {
   const topic = await actionGetTopicById(params.id)
+  const tweets = await actionGetTweetsByTopicId(params.id)
 
   if (!topic) {
     notFound()
@@ -134,6 +139,49 @@ export default async function Order({ params }: { params: { id: string } }) {
           </DescriptionDetails>
         </DescriptionList>
       </div> */}
+
+      <Table className="mt-8 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
+        <TableHead>
+          <TableRow>
+            <TableHeader>Author</TableHeader>
+
+            <TableHeader>Tweet</TableHeader>
+            {/* <TableHeader>Topic</TableHeader> */}
+            <TableHeader>Created At</TableHeader>
+            {/* <TableHeader>Updated At</TableHeader>
+            <TableHeader>Cached At</TableHeader> */}
+            <TableHeader className="relative w-0">
+              <span className="sr-only">Actions</span>
+            </TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tweets.map((tweet) => (
+            <TableRow key={tweet.tweetText} title={`Tweet #${tweet.tweetText}`}>
+              <TableCell>
+                <div className="flex">
+                  <Avatar src={tweet.tweetProfileImageUrl} alt={tweet.tweetUserName} className="size-6" />
+                  <div className="ml-2">{tweet.tweetUserScreenName}</div>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="line-clamp-3 max-w-xs text-wrap">{tweet.tweetText}</div>
+              </TableCell>
+              {/* <TableCell>
+                <div className="line-clamp-2 max-w-xs text-wrap break-all">
+                  <BadgeButton href={`/dashboard/topics/${tweet.topic?.id}`}>{tweet.topic?.title}</BadgeButton>
+                </div>
+              </TableCell> */}
+              <TableCell>{formatDate(tweet.tweetCreatedAt)}</TableCell>
+              {/* <TableCell>{formatDate(tweet.updatedAt)}</TableCell>
+              <TableCell>{formatDate(tweet.cachedAt)}</TableCell> */}
+              <TableCell>
+                <TableCellActionTweet id={tweet.tweetId} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </>
   )
 }
