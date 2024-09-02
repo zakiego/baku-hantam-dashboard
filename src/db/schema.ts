@@ -42,6 +42,10 @@ export const topics = pgTable('topics', {
   title: text('title').notNull(),
   slug: text('slug').notNull().unique(),
   description: text('description').notNull(),
+
+  summary: text('summary'),
+  summary_ai: text('summary_ai'),
+
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 
