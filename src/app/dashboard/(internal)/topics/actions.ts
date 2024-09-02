@@ -2,7 +2,7 @@
 
 import type { SchemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
 import { dbClient, dbSchema } from '@/db'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 export const actionAddTopic = async (props: SchemaAddTopic) => {
@@ -27,6 +27,7 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
       title: props.title,
       slug: props.title.toLowerCase().replace(/\s/g, '-'),
       description: props.description,
+      updatedAt: new Date(),
       ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
     })
     .where(eq(dbSchema.topics.id, id))
@@ -37,7 +38,7 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
 }
 
 export const actionGetTopics = async () => {
-  const data = await dbClient.select().from(dbSchema.topics).orderBy(dbSchema.topics.title)
+  const data = await dbClient.select().from(dbSchema.topics).orderBy(desc(dbSchema.topics.createdAt))
 
   return data
 }
