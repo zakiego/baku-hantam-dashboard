@@ -1,14 +1,7 @@
 'use client'
 
 import { Avatar } from '@/components/avatar'
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownDivider,
-  DropdownItem,
-  DropdownLabel,
-  DropdownMenu,
-} from '@/components/dropdown'
+import { Dropdown, DropdownButton, DropdownItem, DropdownLabel, DropdownMenu } from '@/components/dropdown'
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar'
 import {
   Sidebar,
@@ -21,14 +14,8 @@ import {
 } from '@/components/sidebar'
 import { SidebarLayout } from '@/components/sidebar-layout'
 import type { getEvents } from '@/data'
-import {
-  ArrowRightStartOnRectangleIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Cog8ToothIcon,
-  PlusIcon,
-} from '@heroicons/react/16/solid'
-import { Cog6ToothIcon, HomeIcon, Square2StackIcon, TicketIcon } from '@heroicons/react/20/solid'
+import { ArrowRightStartOnRectangleIcon, ChevronUpIcon } from '@heroicons/react/16/solid'
+import { Square2StackIcon, TicketIcon } from '@heroicons/react/20/solid'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { Toaster } from 'sonner'
@@ -77,10 +64,10 @@ export function ApplicationLayout({
   const pathname = usePathname()
 
   const sidebarItems = [
-    { href: '/dashboard', icon: HomeIcon, label: 'Home' },
+    // { href: '/dashboard', icon: HomeIcon, label: 'Home' },
     { href: '/dashboard/topics', icon: Square2StackIcon, label: 'Topics' },
     { href: '/dashboard/tweets', icon: TicketIcon, label: 'Tweets' },
-    { href: '/dashboard/settings', icon: Cog6ToothIcon, label: 'Settings' },
+    // { href: '/dashboard/settings', icon: Cog6ToothIcon, label: 'Settings' },
   ]
 
   return (
@@ -105,9 +92,9 @@ export function ApplicationLayout({
               <DropdownButton as={SidebarItem}>
                 <Avatar src="/teams/catalyst.svg" />
                 <SidebarLabel>Baku Hantam</SidebarLabel>
-                <ChevronDownIcon />
+                {/* <ChevronDownIcon /> */}
               </DropdownButton>
-              <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
+              {/* <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
                 <DropdownItem href="/settings">
                   <Cog8ToothIcon />
                   <DropdownLabel>Settings</DropdownLabel>
@@ -126,7 +113,7 @@ export function ApplicationLayout({
                   <PlusIcon />
                   <DropdownLabel>New team&hellip;</DropdownLabel>
                 </DropdownItem>
-              </DropdownMenu>
+              </DropdownMenu> */}
             </Dropdown>
           </SidebarHeader>
 
