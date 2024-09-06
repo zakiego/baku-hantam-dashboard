@@ -1,5 +1,5 @@
 import { actionGetTopics } from '@/app/dashboard/(internal)/topics/actions'
-import { DialogAddTopic } from '@/app/dashboard/(internal)/topics/components/dialog'
+import { DialogAddTopic } from '@/app/dashboard/(internal)/topics/components/dialog-add'
 import { Badge } from '@/components/badge'
 import { Heading } from '@/components/heading'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'

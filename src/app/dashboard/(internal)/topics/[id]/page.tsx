@@ -1,6 +1,6 @@
 import { actionGetTopicById } from '@/app/dashboard/(internal)/topics/actions'
 import { ButtonDeleteTopic } from '@/app/dashboard/(internal)/topics/components/button'
-import { DialogEditTopic } from '@/app/dashboard/(internal)/topics/components/dialog'
+import { DialogEditTopic } from '@/app/dashboard/(internal)/topics/components/dialog-edit'
 import { actionGetTweetsByTopicId } from '@/app/dashboard/(internal)/tweets/actions'
 import { TableCellActionTweet } from '@/app/dashboard/(internal)/tweets/components/button'
 import { Avatar } from '@/components/avatar'
