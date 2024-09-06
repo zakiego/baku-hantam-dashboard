@@ -34,6 +34,7 @@ jobs:
           build-args: |
             DATABASE_URL=${{ env.DATABASE_URL }}
             AUTH_SECRET=${{ env.AUTH_SECRET }}
+            OPENAI_API_KEY=temporary
 
   coolify:
     runs-on: ubuntu-latest
