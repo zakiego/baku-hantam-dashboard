@@ -209,7 +209,7 @@ export default async function Order({ params }: { params: { id: string } }) {
               {/* <TableCell>{formatDate(tweet.updatedAt)}</TableCell>
               <TableCell>{formatDate(tweet.cachedAt)}</TableCell> */}
               <TableCell>
-                <TableCellActionTweet id={tweet.tweetId} />
+                <TableCellActionTweet tweetId={tweet.tweetId} />
               </TableCell>
             </TableRow>
           ))}
