@@ -49,7 +49,7 @@ export const topics = pgTable('topics', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 
-  isPublic: boolean('is_public').default(true),
+  isPublic: boolean('is_public').default(false),
 })
 
 export const topicsRelations = relations(topics, ({ many }) => ({

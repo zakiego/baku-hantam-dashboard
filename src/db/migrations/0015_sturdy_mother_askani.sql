@@ -1,0 +1,1 @@
+ALTER TABLE "topics" ALTER COLUMN "is_public" SET DEFAULT false;
