@@ -1,6 +1,7 @@
 import '@/styles/tailwind.css'
 import type { Metadata } from 'next'
 import type React from 'react'
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: {
@@ -13,7 +14,10 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster richColors position="top-center" />
+      </body>
     </html>
   )
 }

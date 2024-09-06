@@ -18,7 +18,6 @@ import { ArrowRightStartOnRectangleIcon, ChevronUpIcon } from '@heroicons/react/
 import { Square2StackIcon, TicketIcon } from '@heroicons/react/20/solid'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Toaster } from 'sonner'
 
 function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' }) {
   return (
@@ -184,7 +183,6 @@ export function ApplicationLayout({
       }
     >
       {children}
-      <Toaster richColors position="top-center" />
     </SidebarLayout>
   )
 }
