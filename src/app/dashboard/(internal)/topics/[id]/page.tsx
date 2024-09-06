@@ -47,7 +47,7 @@ export default async function Order({ params }: { params: { id: string } }) {
       <div className="mt-4 lg:mt-8">
         <div className="flex items-center gap-4">
           <Heading>Topic: {topic.title}</Heading>
-          <Badge color="lime">Public</Badge>
+          {topic.isPublic ? <Badge color="green">Public</Badge> : <Badge color="yellow">Private</Badge>}
         </div>
         <div className="isolate mt-2.5 flex flex-wrap justify-between gap-x-6 gap-y-4">
           <div className="flex flex-wrap gap-x-10 gap-y-4 py-1.5">
