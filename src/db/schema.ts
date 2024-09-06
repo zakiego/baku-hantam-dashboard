@@ -27,7 +27,7 @@ export const tweets = pgTable('tweets', {
   cachedAt: timestamp('cached_at').notNull().defaultNow(),
   topicId: varchar('topic_id', { length: 26 }),
 
-  isPublic: boolean('is_public').default(true),
+  isPublic: boolean('is_public').default(true).notNull(),
 })
 
 export const tweetsRelations = relations(tweets, ({ one }) => ({
@@ -49,7 +49,7 @@ export const topics = pgTable('topics', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 
-  isPublic: boolean('is_public').default(false),
+  isPublic: boolean('is_public').default(false).notNull(),
 })
 
 export const topicsRelations = relations(topics, ({ many }) => ({
