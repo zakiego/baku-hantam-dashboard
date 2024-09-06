@@ -1,11 +1,11 @@
-'use server'
+"use server";
 
-import type { SchemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
-import { dbClient, dbSchema } from '@/db'
-import { AI_MODEL } from '@/lib/ai'
-import { generateText } from 'ai'
-import { desc, eq } from 'drizzle-orm'
-import { revalidatePath } from 'next/cache'
+import type { SchemaAddTopic } from "@/app/dashboard/(internal)/topics/schema";
+import { dbClient, dbSchema } from "@/db";
+import { AI_MODEL } from "@/lib/ai";
+import { generateText } from "ai";
+import { desc, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const actionAddTopic = async (props: SchemaAddTopic) => {
   try {
@@ -13,26 +13,27 @@ export const actionAddTopic = async (props: SchemaAddTopic) => {
       .insert(dbSchema.topics)
       .values({
         title: props.title,
-        slug: props.slug.toLowerCase().replace(/\s/g, '-'),
+        slug: props.slug.toLowerCase().replace(/\s/g, "-"),
         description: props.description,
       })
-      .returning()
+      .returning();
 
-    revalidatePath('/dashboard/topics', 'page')
+    revalidatePath("/dashboard/topics", "page");
 
     return {
       ok: true,
-      message: 'Topic added successfully',
-    }
+      message: "Topic added successfully",
+    };
   } catch (error) {
-    const errorMessages = error instanceof Error ? error.message : JSON.stringify(error)
+    const errorMessages =
+      error instanceof Error ? error.message : JSON.stringify(error);
 
     return {
       ok: false,
       message: `Failed to add topic: ${errorMessages}`,
-    }
+    };
   }
-}
+};
 
 export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
   try {
@@ -40,7 +41,7 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
       .update(dbSchema.topics)
       .set({
         title: props.title,
-        slug: props.slug.toLowerCase().replace(/\s/g, '-'),
+        slug: props.slug.toLowerCase().replace(/\s/g, "-"),
         description: props.description,
         updatedAt: new Date(),
         summary: props.summary,
@@ -48,51 +49,74 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
         isPublic: props.isPublic,
         ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
       })
-      .where(eq(dbSchema.topics.id, id))
+      .where(eq(dbSchema.topics.id, id));
 
-    revalidatePath(`/dashboard/topics/${id}`)
+    revalidatePath(`/dashboard/topics/${id}`);
 
     return {
       ok: true,
-      message: 'Topic updated successfully',
-    }
+      message: "Topic updated successfully",
+    };
   } catch (error) {
-    const errorMessages = error instanceof Error ? error.message : JSON.stringify(error)
+    const errorMessages =
+      error instanceof Error ? error.message : JSON.stringify(error);
 
     return {
       ok: false,
       message: `Failed to update topic: ${errorMessages}`,
-    }
+    };
   }
-}
+};
 
 export const actionGetTopics = async () => {
-  const data = await dbClient.select().from(dbSchema.topics).orderBy(desc(dbSchema.topics.createdAt))
+  const data = await dbClient
+    .select()
+    .from(dbSchema.topics)
+    .orderBy(desc(dbSchema.topics.createdAt));
 
-  return data
-}
+  return data;
+};
 
 export const actionGetTopicById = async (id: string) => {
-  const data = await dbClient.select().from(dbSchema.topics).where(eq(dbSchema.topics.id, id)).limit(1)
+  const data = await dbClient
+    .select()
+    .from(dbSchema.topics)
+    .where(eq(dbSchema.topics.id, id))
+    .limit(1);
 
-  return data[0]
-}
+  return data[0];
+};
 
-export const actionChangePublicStatus = async (id: string, isPublic: boolean) => {
-  const data = await dbClient.update(dbSchema.topics).set({ isPublic }).where(eq(dbSchema.topics.id, id))
+export const actionChangePublicStatus = async (
+  id: string,
+  isPublic: boolean,
+) => {
+  const data = await dbClient
+    .update(dbSchema.topics)
+    .set({ isPublic })
+    .where(eq(dbSchema.topics.id, id));
 
-  revalidatePath(`/dashboard/topics/${id}`)
+  revalidatePath(`/dashboard/topics/${id}`);
 
-  return isPublic ? '🎉 Topic is now public' : '🎉 Topic is now private'
-}
+  return isPublic ? "🎉 Topic is now public" : "🎉 Topic is now private";
+};
 
 export const actionDeleteTopic = async (id: string) => {
-  const data = await dbClient.delete(dbSchema.topics).where(eq(dbSchema.topics.id, id))
+  try {
+    const data = await dbClient
+      .delete(dbSchema.topics)
+      .where(eq(dbSchema.topics.id, id));
 
-  revalidatePath(`/dashboard/topics/${id}`)
+    revalidatePath("/dashboard/topics", "page");
 
-  return '🎉 Topic deleted successfully'
-}
+    return { ok: true, message: "Topic deleted successfully" };
+  } catch (error) {
+    const errorMessages =
+      error instanceof Error ? error.message : JSON.stringify(error);
+
+    return { ok: false, message: `Failed to delete topic: ${errorMessages}` };
+  }
+};
 
 export const actionAIGenerateSummary = async (id: string) => {
   const data = await dbClient.query.topics.findFirst({
@@ -109,10 +133,10 @@ export const actionAIGenerateSummary = async (id: string) => {
         },
       },
     },
-  })
+  });
 
   if (!data) {
-    throw new Error('Topic not found')
+    throw new Error("Topic not found");
   }
 
   const { text } = await generateText({
@@ -128,9 +152,9 @@ export const actionAIGenerateSummary = async (id: string) => {
     Maksimal 280 karakter.
     Berikut tweet-tweetnya: ${JSON.stringify(data.tweets)}
     `,
-  })
+  });
 
-  console.log(text)
+  console.log(text);
 
-  return text
-}
+  return text;
+};
