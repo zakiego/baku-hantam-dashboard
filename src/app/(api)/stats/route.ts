@@ -14,7 +14,7 @@ export async function GET() {
     },
   })
 
-  const usersSet = tweets.map((tweet) => tweet.tweetUserId)
+  const usersSet = new Set(tweets.map((tweet) => tweet.tweetUserId))
 
   const topics = await dbClient.query.topics.findMany({
     where(fields, operators) {
@@ -27,7 +27,7 @@ export async function GET() {
 
   return Response.json({
     data: snakecaseKeys({
-      users: usersSet.length,
+      users: usersSet.size,
       topics: topics.length,
       tweets: tweets.length,
     }),
