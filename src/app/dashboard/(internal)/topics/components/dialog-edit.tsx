@@ -6,12 +6,10 @@ import {
   actionUpdateTopic,
 } from '@/app/dashboard/(internal)/topics/actions'
 import { type SchemaAddTopic, schemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
-import { BadgeDevelopment } from '@/components/badge-development'
 import { Button } from '@/components/button'
 import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
 import { ErrorMessage, Field, Label } from '@/components/fieldset'
 import { Input } from '@/components/input'
-import { Textarea } from '@/components/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -90,6 +88,7 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             )}
           </Field>
 
+          {/* 
           <Field>
             <Label>
               Summary <BadgeDevelopment />
@@ -112,7 +111,7 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             <Button className="mt-2" onClick={() => generateSummary()} disabled={isLoadingSummary}>
               {isLoadingSummary ? 'Generating...' : 'Generate Summary'}
             </Button>
-          </Field>
+          </Field> */}
 
           <Field>
             <Label>Created At</Label>
