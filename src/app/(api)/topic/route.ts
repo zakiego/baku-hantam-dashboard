@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { dbClient } from '@/db'
+import snakecaseKeys from 'snakecase-keys'
 
 export async function GET() {
   const data = await dbClient.query.topics.findMany({
@@ -35,39 +36,37 @@ export async function GET() {
   const modifiedData = data.map(({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
     const allPeoples: {
       id: string
-      user_id: string
-      profile_image_url: string
+      userId: string
+      profileImageUrl: string
     }[] = []
 
     // biome-ignore lint/complexity/noForEach: <explanation>
     peoples.forEach((item) => {
       allPeoples.push({
         id: item.id,
-        user_id: item.tweetUserId,
-        profile_image_url: item.tweetProfileImageUrl,
+        userId: item.tweetUserId,
+        profileImageUrl: item.tweetProfileImageUrl,
       })
 
       if (item.quotedTweetId && item.quotedTweetUserId && item.quotedTweetUserProfileImageUrl) {
         allPeoples.push({
           id: item.quotedTweetId,
-          user_id: item.quotedTweetUserId,
-          profile_image_url: item.quotedTweetUserProfileImageUrl,
+          userId: item.quotedTweetUserId,
+          profileImageUrl: item.quotedTweetUserProfileImageUrl,
         })
       }
     })
 
     const uniquePeoples = allPeoples.filter(
-      (item, index, self) => self.findIndex((t) => t.user_id === item.user_id) === index
+      (item, index, self) => self.findIndex((t) => t.userId === item.userId) === index
     )
 
     return {
       ...rest,
-      tweets_count: peoples.length,
-      update_at: updatedAt,
-      create_at: createdAt,
+      tweetsCount: peoples.length,
       peoples: uniquePeoples,
     }
   })
 
-  return Response.json({ data: modifiedData })
+  return Response.json({ data: snakecaseKeys(modifiedData) })
 }

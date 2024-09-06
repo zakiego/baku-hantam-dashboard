@@ -1,4 +1,5 @@
 import { dbClient } from '@/db'
+import snakecaseKeys from 'snakecase-keys'
 
 interface Params {
   screenName: string
@@ -54,5 +55,5 @@ export async function GET(request: Request, context: { params: Params }) {
     return acc
   }, {})
 
-  return Response.json({ data: { profile, tweets, topics: Object.values(topics) } })
+  return Response.json({ data: snakecaseKeys({ profile, tweets, topics: Object.values(topics) }) })
 }

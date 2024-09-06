@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { dbClient } from '@/db'
+import snakecaseKeys from 'snakecase-keys'
 
 export async function GET() {
   const tweets = await dbClient.query.tweets.findMany({
@@ -25,10 +26,10 @@ export async function GET() {
   })
 
   return Response.json({
-    data: {
+    data: snakecaseKeys({
       users: usersSet.length,
       topics: topics.length,
       tweets: tweets.length,
-    },
+    }),
   })
 }

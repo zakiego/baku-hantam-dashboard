@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { dbClient } from '@/db'
+import snakecaseKeys from 'snakecase-keys'
 
 export async function GET() {
   const data = await dbClient.query.tweets.findMany({
@@ -58,5 +59,5 @@ export async function GET() {
     rank: index + 1,
   }))
 
-  return Response.json({ data: ranked })
+  return Response.json({ data: snakecaseKeys(ranked) })
 }

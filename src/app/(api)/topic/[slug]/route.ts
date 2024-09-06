@@ -1,4 +1,5 @@
 import { dbClient } from '@/db'
+import snakecaseKeys from 'snakecase-keys'
 
 interface Params {
   slug: string
@@ -34,5 +35,5 @@ export async function GET(request: Request, context: { params: Params }) {
     },
   })
 
-  return Response.json({ data: data })
+  return Response.json({ data: snakecaseKeys(data || {}) })
 }
