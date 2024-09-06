@@ -5,6 +5,7 @@ import { actionGetTweetsByTopicId } from '@/app/dashboard/(internal)/tweets/acti
 import { TableCellActionTweet } from '@/app/dashboard/(internal)/tweets/components/button'
 import { Avatar } from '@/components/avatar'
 import { Badge } from '@/components/badge'
+import { BadgeDevelopment } from '@/components/badge-development'
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/description-list'
 import { Divider } from '@/components/divider'
 import { Heading, Subheading } from '@/components/heading'
@@ -98,6 +99,16 @@ export default async function Order({ params }: { params: { id: string } }) {
 
           <DescriptionTerm>Created at</DescriptionTerm>
           <DescriptionDetails>{formatDate(topic.createdAt)}</DescriptionDetails>
+
+          <DescriptionTerm>
+            Summary <BadgeDevelopment />
+          </DescriptionTerm>
+          <DescriptionDetails>{topic.summary}</DescriptionDetails>
+
+          <DescriptionTerm>
+            Summary AI <BadgeDevelopment />
+          </DescriptionTerm>
+          <DescriptionDetails>{topic.summary_ai}</DescriptionDetails>
 
           <DescriptionTerm>Updated at</DescriptionTerm>
           <DescriptionDetails>{formatDate(topic.updatedAt)}</DescriptionDetails>

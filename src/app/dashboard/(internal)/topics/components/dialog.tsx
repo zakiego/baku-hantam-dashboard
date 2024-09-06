@@ -1,11 +1,18 @@
 'use client'
 
-import { actionAddTopic, type actionGetTopicById, actionUpdateTopic } from '@/app/dashboard/(internal)/topics/actions'
+import {
+  actionAIGenerateSummary,
+  actionAddTopic,
+  type actionGetTopicById,
+  actionUpdateTopic,
+} from '@/app/dashboard/(internal)/topics/actions'
 import { type SchemaAddTopic, schemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
+import { BadgeDevelopment } from '@/components/badge-development'
 import { Button } from '@/components/button'
 import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
 import { ErrorMessage, Field, Label } from '@/components/fieldset'
 import { Input } from '@/components/input'
+import { Textarea } from '@/components/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -91,6 +98,8 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
       slug: props.data.slug,
       description: props.data.description,
       createdAt: props.data.createdAt.toISOString().split('T')[0],
+      summary: props.data.summary || '',
+      summary_ai: props.data.summary_ai || '',
     },
   })
 
@@ -99,6 +108,15 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
     toast.success(resp)
     reset()
   })
+
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false)
+
+  const generateSummary = async () => {
+    setIsLoadingSummary(true)
+    const resp = await actionAIGenerateSummary(props.data.id)
+    setIsLoadingSummary(false)
+    reset({ summary_ai: resp })
+  }
 
   return (
     <>
@@ -131,6 +149,30 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             {formState.errors.description?.message && (
               <ErrorMessage>{formState.errors.description?.message.toString()}</ErrorMessage>
             )}
+          </Field>
+
+          <Field>
+            <Label>
+              Summary <BadgeDevelopment />
+            </Label>
+
+            <Textarea placeholder="Provide a concise summary of the topic" {...register('summary')} />
+            {formState.errors.summary?.message && (
+              <ErrorMessage>{formState.errors.summary?.message.toString()}</ErrorMessage>
+            )}
+          </Field>
+
+          <Field>
+            <Label>
+              Summary AI <BadgeDevelopment />
+            </Label>
+            <Textarea placeholder="AI-generated summary of the topic" {...register('summary_ai')} />
+            {formState.errors.summary_ai?.message && (
+              <ErrorMessage>{formState.errors.summary_ai?.message.toString()}</ErrorMessage>
+            )}
+            <Button className="mt-2" onClick={() => generateSummary()} disabled={isLoadingSummary}>
+              {isLoadingSummary ? 'Generating...' : 'Generate Summary'}
+            </Button>
           </Field>
 
           <Field>
