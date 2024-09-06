@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const schemaAddTopic = z.object({
   title: z.string().min(3),
@@ -8,6 +8,6 @@ export const schemaAddTopic = z.object({
   summary_ai: z.string().optional(),
   createdAt: z.string().date().optional(),
   isPublic: z.boolean().optional(),
-})
+});
 
-export type SchemaAddTopic = z.infer<typeof schemaAddTopic>
+export type SchemaAddTopic = z.infer<typeof schemaAddTopic>;

@@ -1,17 +1,19 @@
-import '@/styles/tailwind.css'
-import type { Metadata } from 'next'
-import type React from 'react'
-import { Toaster } from 'sonner'
+import "@/styles/tailwind.css";
+import type { Metadata } from "next";
+import type React from "react";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: {
-    template: '%s - Baku Hantam',
-    default: 'Baku Hantam',
+    template: "%s - Baku Hantam",
+    default: "Baku Hantam",
   },
-  description: '',
-}
+  description: "",
+};
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -19,5 +21,5 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Toaster richColors position="top-center" />
       </body>
     </html>
-  )
+  );
 }

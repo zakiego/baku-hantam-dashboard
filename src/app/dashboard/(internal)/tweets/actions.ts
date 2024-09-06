@@ -1,39 +1,39 @@
-'use server'
+"use server";
 
-import type { SchemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
-import { dbClient } from '@/db'
-import { insertNewTweet, refreshTweets } from '@/utils/tweet'
-import { getTweetId, validateTweetUrl } from '@/utils/twitter'
-import { revalidatePath } from 'next/cache'
-import { getTweet } from 'react-tweet/api'
+import type { SchemaAddTweet } from "@/app/dashboard/(internal)/tweets/schema";
+import { dbClient } from "@/db";
+import { insertNewTweet, refreshTweets } from "@/utils/tweet";
+import { getTweetId, validateTweetUrl } from "@/utils/twitter";
+import { revalidatePath } from "next/cache";
+import { getTweet } from "react-tweet/api";
 
 export const actionAddTweet = async (props: SchemaAddTweet) => {
-  const url = validateTweetUrl(props.url)
+  const url = validateTweetUrl(props.url);
   if (!url) {
     return {
       ok: false,
-      message: '❌ Invalid tweet url',
-    }
+      message: "❌ Invalid tweet url",
+    };
   }
 
-  const tweet = await getTweet(getTweetId(props.url))
+  const tweet = await getTweet(getTweetId(props.url));
 
   if (!tweet) {
     return {
       ok: false,
       message: "❌ Couldn't fetch tweet",
-    }
+    };
   }
 
-  const data = await insertNewTweet({ tweet, topicId: props.topicId })
+  const data = await insertNewTweet({ tweet, topicId: props.topicId });
 
-  revalidatePath('/dashboard/tweets', 'page')
+  revalidatePath("/dashboard/tweets", "page");
 
   return {
     ok: true,
-    message: '🎉 Tweet added successfully',
-  }
-}
+    message: "🎉 Tweet added successfully",
+  };
+};
 
 export const actionGetTweets = async () => {
   const data = await dbClient.query.tweets.findMany({
@@ -47,12 +47,12 @@ export const actionGetTweets = async () => {
       },
     },
     orderBy(fields, operators) {
-      return operators.desc(fields.tweetCreatedAt)
+      return operators.desc(fields.tweetCreatedAt);
     },
-  })
+  });
 
-  return data
-}
+  return data;
+};
 
 export const actionGetTweetsByTopicId = async (topicId: string) => {
   const data = await dbClient.query.tweets.findMany({
@@ -66,20 +66,20 @@ export const actionGetTweetsByTopicId = async (topicId: string) => {
       },
     },
     where(fields, operators) {
-      return operators.eq(fields.topicId, topicId)
+      return operators.eq(fields.topicId, topicId);
     },
     orderBy(fields, operators) {
-      return operators.desc(fields.tweetCreatedAt)
+      return operators.desc(fields.tweetCreatedAt);
     },
-  })
+  });
 
-  return data
-}
+  return data;
+};
 
 export const actionGetTweetByTweetId = async (id: string) => {
   const data = await dbClient.query.tweets.findFirst({
     where(fields, operators) {
-      return operators.eq(fields.tweetId, id)
+      return operators.eq(fields.tweetId, id);
     },
     with: {
       topic: {
@@ -90,44 +90,44 @@ export const actionGetTweetByTweetId = async (id: string) => {
         },
       },
     },
-  })
+  });
 
-  return data
-}
+  return data;
+};
 
 export const refreshTweetByTweetId = async (id: string) => {
   const tweet = await dbClient.query.tweets.findFirst({
     where(fields, operators) {
-      return operators.eq(fields.tweetId, id)
+      return operators.eq(fields.tweetId, id);
     },
-  })
+  });
 
   if (!tweet) {
     return {
       ok: false,
-      message: '❌ Tweet not found',
-    }
+      message: "❌ Tweet not found",
+    };
   }
 
-  const resp = await getTweet(tweet.tweetId)
+  const resp = await getTweet(tweet.tweetId);
 
   if (!resp) {
     return {
       ok: false,
       message: "❌ Couldn't fetch tweet",
-    }
+    };
   }
 
-  const data = await refreshTweets({ tweet: resp })
+  const data = await refreshTweets({ tweet: resp });
 
-  revalidatePath(`/dashboard/tweets/${id}`)
-  revalidatePath('/dashboard/tweets', 'page')
+  revalidatePath(`/dashboard/tweets/${id}`);
+  revalidatePath("/dashboard/tweets", "page");
 
   return {
     ok: true,
-    message: '🎉 Tweet updated successfully',
-  }
-}
+    message: "🎉 Tweet updated successfully",
+  };
+};
 
 // export const actionAddTopic = async (props: SchemaAddTopic) => {
 //   const data = await dbClient

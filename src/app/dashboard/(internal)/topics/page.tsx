@@ -1,19 +1,26 @@
-import { actionGetTopics } from '@/app/dashboard/(internal)/topics/actions'
-import { DialogAddTopic } from '@/app/dashboard/(internal)/topics/components/dialog-add'
-import { Badge } from '@/components/badge'
-import { Heading } from '@/components/heading'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
-import { formatDate } from '@/utils/date'
-import type { Metadata } from 'next'
+import { actionGetTopics } from "@/app/dashboard/(internal)/topics/actions";
+import { DialogAddTopic } from "@/app/dashboard/(internal)/topics/components/dialog-add";
+import { Badge } from "@/components/badge";
+import { Heading } from "@/components/heading";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/table";
+import { formatDate } from "@/utils/date";
+import type { Metadata } from "next";
 
-const TITLE = 'Topics'
+const TITLE = "Topics";
 
 export const metadata: Metadata = {
   title: TITLE,
-}
+};
 
 export default async function Topics() {
-  const data = await actionGetTopics()
+  const data = await actionGetTopics();
 
   return (
     <>
@@ -34,13 +41,23 @@ export default async function Topics() {
         </TableHead>
         <TableBody>
           {data.map((topic) => (
-            <TableRow key={topic.slug} href={`/dashboard/topics/${topic.id}`} title={`Topic #${topic.title}`}>
+            <TableRow
+              key={topic.slug}
+              href={`/dashboard/topics/${topic.id}`}
+              title={`Topic #${topic.title}`}
+            >
               <TableCell>
-                <div className="line-clamp-2 max-w-xs text-wrap">{topic.title}</div>
+                <div className="line-clamp-2 max-w-xs text-wrap">
+                  {topic.title}
+                </div>
               </TableCell>
 
               <TableCell>
-                {topic.isPublic ? <Badge color="green">Public</Badge> : <Badge color="yellow">Private</Badge>}
+                {topic.isPublic ? (
+                  <Badge color="green">Public</Badge>
+                ) : (
+                  <Badge color="yellow">Private</Badge>
+                )}
               </TableCell>
 
               {/* <TableCell>
@@ -58,5 +75,5 @@ export default async function Topics() {
         </TableBody>
       </Table>
     </>
-  )
+  );
 }

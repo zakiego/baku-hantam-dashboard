@@ -1,33 +1,40 @@
-import { actionGetTopics } from '@/app/dashboard/(internal)/topics/actions'
-import { actionGetTweets } from '@/app/dashboard/(internal)/tweets/actions'
-import { TableCellActionTweet } from '@/app/dashboard/(internal)/tweets/components/button'
-import { DialogAddTweet } from '@/app/dashboard/(internal)/tweets/components/modal'
-import { Avatar } from '@/components/avatar'
-import { BadgeButton } from '@/components/badge'
-import { Heading } from '@/components/heading'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
-import type { Metadata } from 'next'
+import { actionGetTopics } from "@/app/dashboard/(internal)/topics/actions";
+import { actionGetTweets } from "@/app/dashboard/(internal)/tweets/actions";
+import { TableCellActionTweet } from "@/app/dashboard/(internal)/tweets/components/button";
+import { DialogAddTweet } from "@/app/dashboard/(internal)/tweets/components/modal";
+import { Avatar } from "@/components/avatar";
+import { BadgeButton } from "@/components/badge";
+import { Heading } from "@/components/heading";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/table";
+import type { Metadata } from "next";
 
-const TITLE = 'Tweets'
+const TITLE = "Tweets";
 
 export const metadata: Metadata = {
   title: TITLE,
-}
+};
 
 type Tweet = {
-  content: string
-  link: string
-  author: string
+  content: string;
+  link: string;
+  author: string;
   topic: {
-    id: number
-    slug: string
-    title: string
-  }
-}
+    id: number;
+    slug: string;
+    title: string;
+  };
+};
 
 export default async function Tweets() {
-  const data = await actionGetTweets()
-  const topics = await actionGetTopics()
+  const data = await actionGetTweets();
+  const topics = await actionGetTopics();
 
   //   export const tweets = pgTable('tweets', {
   //   id: varchar('id', { length: 26 }).$defaultFn(ulid).primaryKey(),
@@ -71,16 +78,24 @@ export default async function Tweets() {
             <TableRow key={tweet.tweetText} title={`Tweet #${tweet.tweetText}`}>
               <TableCell>
                 <div className="flex">
-                  <Avatar src={tweet.tweetProfileImageUrl} alt={tweet.tweetUserName} className="size-6" />
+                  <Avatar
+                    src={tweet.tweetProfileImageUrl}
+                    alt={tweet.tweetUserName}
+                    className="size-6"
+                  />
                   <div className="ml-2">{tweet.tweetUserScreenName}</div>
                 </div>
               </TableCell>
               <TableCell>
-                <div className="line-clamp-3 max-w-xs text-wrap">{tweet.tweetText}</div>
+                <div className="line-clamp-3 max-w-xs text-wrap">
+                  {tweet.tweetText}
+                </div>
               </TableCell>
               <TableCell>
                 <div className="line-clamp-2 max-w-xs text-wrap break-all">
-                  <BadgeButton href={`/dashboard/topics/${tweet.topic?.id}`}>{tweet.topic?.title}</BadgeButton>
+                  <BadgeButton href={`/dashboard/topics/${tweet.topic?.id}`}>
+                    {tweet.topic?.title}
+                  </BadgeButton>
                 </div>
               </TableCell>
               {/* <TableCell>{tweet.tweetCreatedAt}</TableCell>
@@ -94,5 +109,5 @@ export default async function Tweets() {
         </TableBody>
       </Table>
     </>
-  )
+  );
 }

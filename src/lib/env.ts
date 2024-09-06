@@ -1,5 +1,5 @@
-import { createEnv } from '@t3-oss/env-nextjs'
-import { z } from 'zod'
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
 
 export const ENV = createEnv({
   server: {
@@ -12,4 +12,4 @@ export const ENV = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
-})
+});

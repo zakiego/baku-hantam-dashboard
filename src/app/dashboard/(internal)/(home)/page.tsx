@@ -1,8 +1,15 @@
-import { Avatar } from '@/components/avatar'
-import { Heading } from '@/components/heading'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table'
-import { getRecentOrders } from '@/data'
-import { redirect } from 'next/navigation'
+import { Avatar } from "@/components/avatar";
+import { Heading } from "@/components/heading";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/table";
+import { getRecentOrders } from "@/data";
+import { redirect } from "next/navigation";
 
 // export function Stat({ title, value, change }: { title: string; value: string; change: string }) {
 //   return (
@@ -19,8 +26,8 @@ import { redirect } from 'next/navigation'
 // }
 
 export default async function Home() {
-  redirect('/dashboard/topics')
-  const orders = await getRecentOrders()
+  redirect("/dashboard/topics");
+  const orders = await getRecentOrders();
 
   // const passwd = await saltAndHashPassword('passwod')
   // await dbClient.insert(dbSchema.users).values({
@@ -67,7 +74,11 @@ export default async function Home() {
         </TableHead>
         <TableBody>
           {orders.map((order) => (
-            <TableRow key={order.id} href={order.url} title={`Order #${order.id}`}>
+            <TableRow
+              key={order.id}
+              href={order.url}
+              title={`Order #${order.id}`}
+            >
               <TableCell>{order.id}</TableCell>
               <TableCell className="text-zinc-500">{order.date}</TableCell>
               <TableCell>{order.customer.name}</TableCell>
@@ -83,5 +94,5 @@ export default async function Home() {
         </TableBody>
       </Table>
     </>
-  )
+  );
 }

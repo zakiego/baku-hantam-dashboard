@@ -1,61 +1,71 @@
-'use client'
+"use client";
 
 import {
   actionAIGenerateSummary,
   type actionGetTopicById,
   actionUpdateTopic,
-} from '@/app/dashboard/(internal)/topics/actions'
-import { type SchemaAddTopic, schemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
-import { Button } from '@/components/button'
-import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
-import { Description, ErrorMessage, Field, Label } from '@/components/fieldset'
-import { Input } from '@/components/input'
-import { Switch, SwitchField } from '@/components/switch'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+} from "@/app/dashboard/(internal)/topics/actions";
+import {
+  type SchemaAddTopic,
+  schemaAddTopic,
+} from "@/app/dashboard/(internal)/topics/schema";
+import { Button } from "@/components/button";
+import {
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/dialog";
+import { Description, ErrorMessage, Field, Label } from "@/components/fieldset";
+import { Input } from "@/components/input";
+import { Switch, SwitchField } from "@/components/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface DialogEditTopicProps {
-  data: Awaited<ReturnType<typeof actionGetTopicById>>
+  data: Awaited<ReturnType<typeof actionGetTopicById>>;
 }
 
 export function DialogEditTopic(props: DialogEditTopicProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { register, handleSubmit, formState, reset, setValue } = useForm<SchemaAddTopic>({
-    resolver: zodResolver(schemaAddTopic),
-    reValidateMode: 'onChange',
-    defaultValues: {
-      title: props.data.title,
-      slug: props.data.slug,
-      description: props.data.description,
-      createdAt: props.data.createdAt.toISOString().split('T')[0],
-      summary: props.data.summary || '',
-      summary_ai: props.data.summary_ai || '',
-      isPublic: props.data.isPublic,
-    },
-  })
+  const { register, handleSubmit, formState, reset, setValue } =
+    useForm<SchemaAddTopic>({
+      resolver: zodResolver(schemaAddTopic),
+      reValidateMode: "onChange",
+      defaultValues: {
+        title: props.data.title,
+        slug: props.data.slug,
+        description: props.data.description,
+        createdAt: props.data.createdAt.toISOString().split("T")[0],
+        summary: props.data.summary || "",
+        summary_ai: props.data.summary_ai || "",
+        isPublic: props.data.isPublic,
+      },
+    });
 
   const onSubmit = handleSubmit(async (data) => {
-    const { ok, message } = await actionUpdateTopic(props.data.id, data)
+    const { ok, message } = await actionUpdateTopic(props.data.id, data);
     if (!ok) {
-      toast.error(message)
-      return
+      toast.error(message);
+      return;
     }
-    setIsOpen(false)
-    toast.success(message)
-    reset()
-  })
+    setIsOpen(false);
+    toast.success(message);
+    reset();
+  });
 
-  const [isLoadingSummary, setIsLoadingSummary] = useState(false)
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
   const generateSummary = async () => {
-    setIsLoadingSummary(true)
-    const resp = await actionAIGenerateSummary(props.data.id)
-    setIsLoadingSummary(false)
-    reset({ summary_ai: resp })
-  }
+    setIsLoadingSummary(true);
+    const resp = await actionAIGenerateSummary(props.data.id);
+    setIsLoadingSummary(false);
+    reset({ summary_ai: resp });
+  };
 
   return (
     <>
@@ -65,28 +75,43 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
       <Dialog open={isOpen} onClose={setIsOpen}>
         <DialogTitle>Edit Topic</DialogTitle>
         <DialogDescription>
-          Fill in the details for the new topic you want to add. Make sure the information is clear and concise.
+          Fill in the details for the new topic you want to add. Make sure the
+          information is clear and concise.
         </DialogDescription>
         <DialogBody className="space-y-4">
           <Field>
             <Label>Title</Label>
-            <Input placeholder="Enter the topic title" {...register('title')} />
+            <Input placeholder="Enter the topic title" {...register("title")} />
             {formState.errors.title?.message && (
-              <ErrorMessage>{formState.errors.title?.message.toString()}</ErrorMessage>
+              <ErrorMessage>
+                {formState.errors.title?.message.toString()}
+              </ErrorMessage>
             )}
           </Field>
 
           <Field>
             <Label>Slug</Label>
-            <Input placeholder="Enter a unique slug for the topic" {...register('slug')} />
-            {formState.errors.slug?.message && <ErrorMessage>{formState.errors.slug?.message.toString()}</ErrorMessage>}
+            <Input
+              placeholder="Enter a unique slug for the topic"
+              {...register("slug")}
+            />
+            {formState.errors.slug?.message && (
+              <ErrorMessage>
+                {formState.errors.slug?.message.toString()}
+              </ErrorMessage>
+            )}
           </Field>
 
           <Field>
             <Label>Description</Label>
-            <Input placeholder="Briefly describe the topic" {...register('description')} />
+            <Input
+              placeholder="Briefly describe the topic"
+              {...register("description")}
+            />
             {formState.errors.description?.message && (
-              <ErrorMessage>{formState.errors.description?.message.toString()}</ErrorMessage>
+              <ErrorMessage>
+                {formState.errors.description?.message.toString()}
+              </ErrorMessage>
             )}
           </Field>
 
@@ -95,7 +120,7 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             <Description>Make the topic public or private</Description>
             <Switch
               onChange={(e) => {
-                setValue('isPublic', e)
+                setValue("isPublic", e);
               }}
               defaultChecked={props.data.isPublic}
             />
@@ -128,9 +153,15 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
 
           <Field>
             <Label>Created At</Label>
-            <Input type="date" placeholder="Enter the date the topic was created" {...register('createdAt')} />
+            <Input
+              type="date"
+              placeholder="Enter the date the topic was created"
+              {...register("createdAt")}
+            />
             {formState.errors.createdAt?.message && (
-              <ErrorMessage>{formState.errors.createdAt?.message.toString()}</ErrorMessage>
+              <ErrorMessage>
+                {formState.errors.createdAt?.message.toString()}
+              </ErrorMessage>
             )}
           </Field>
         </DialogBody>
@@ -142,13 +173,13 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             type="button"
             disabled={!formState.isValid || formState.isSubmitting}
             onClick={() => {
-              onSubmit()
+              onSubmit();
             }}
           >
-            {formState.isSubmitting ? 'Updating...' : 'Submit'}
+            {formState.isSubmitting ? "Updating..." : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }

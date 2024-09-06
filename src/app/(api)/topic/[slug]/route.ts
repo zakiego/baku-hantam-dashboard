@@ -1,14 +1,17 @@
-import { dbClient } from '@/db'
-import snakecaseKeys from 'snakecase-keys'
+import { dbClient } from "@/db";
+import snakecaseKeys from "snakecase-keys";
 
 interface Params {
-  slug: string
+  slug: string;
 }
 
 export async function GET(request: Request, context: { params: Params }) {
   const data = await dbClient.query.topics.findFirst({
     where(fields, operators) {
-      return operators.and(operators.eq(fields.isPublic, true), operators.eq(fields.slug, context.params.slug))
+      return operators.and(
+        operators.eq(fields.isPublic, true),
+        operators.eq(fields.slug, context.params.slug),
+      );
     },
     with: {
       tweets: {
@@ -33,7 +36,7 @@ export async function GET(request: Request, context: { params: Params }) {
       updatedAt: true,
       createdAt: true,
     },
-  })
+  });
 
-  return Response.json({ data: snakecaseKeys(data || {}) })
+  return Response.json({ data: snakecaseKeys(data || {}) });
 }

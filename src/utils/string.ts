@@ -8,8 +8,8 @@ export const createSlug = (title: string) => {
 
   return title
     .toLowerCase() // convert to lowercase
-    .replace(/\s/g, '-') // change all spaces to hyphens
-    .replace(/[^a-z0-9-]/g, '-') // change all symbols to hyphens
-    .replace(/-+/g, '-') // change all multiple hyphens to a single hyphen
-    .replace(/^-|-$/g, '') // remove all hyphens at the beginning and end
-}
+    .replace(/\s/g, "-") // change all spaces to hyphens
+    .replace(/[^a-z0-9-]/g, "-") // change all symbols to hyphens
+    .replace(/-+/g, "-") // change all multiple hyphens to a single hyphen
+    .replace(/^-|-$/g, ""); // remove all hyphens at the beginning and end
+};

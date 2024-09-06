@@ -1,12 +1,12 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-import { dbClient } from '@/db'
-import snakecaseKeys from 'snakecase-keys'
+import { dbClient } from "@/db";
+import snakecaseKeys from "snakecase-keys";
 
 export async function GET() {
   const data = await dbClient.query.tweets.findMany({
     where(fields, operators) {
-      return operators.eq(fields.isPublic, true)
+      return operators.eq(fields.isPublic, true);
     },
     columns: {
       tweetId: true,
@@ -15,7 +15,7 @@ export async function GET() {
       tweetUserName: true,
       tweetUserScreenName: true,
     },
-  })
+  });
 
   const tweetCounts = Object.values(
     data.reduce(
@@ -23,14 +23,14 @@ export async function GET() {
         acc: Record<
           string,
           {
-            count: number
-            tweetUserId: string
-            tweetProfileImageUrl: string
-            tweetUserName: string
-            tweetUserScreenName: string
+            count: number;
+            tweetUserId: string;
+            tweetProfileImageUrl: string;
+            tweetUserName: string;
+            tweetUserScreenName: string;
           }
         >,
-        tweet
+        tweet,
       ) => {
         if (!acc[tweet.tweetUserId]) {
           acc[tweet.tweetUserId] = {
@@ -39,25 +39,27 @@ export async function GET() {
             tweetProfileImageUrl: tweet.tweetProfileImageUrl,
             tweetUserName: tweet.tweetUserName,
             tweetUserScreenName: tweet.tweetUserScreenName,
-          }
+          };
         }
-        acc[tweet.tweetUserId].count++
-        return acc
+        acc[tweet.tweetUserId].count++;
+        return acc;
       },
-      {}
-    )
-  )
+      {},
+    ),
+  );
 
   // Sort by count (desc) and then by tweetUserScreenName (asc)
   const sorted = tweetCounts.sort(
-    (a, b) => b.count - a.count || a.tweetUserScreenName.localeCompare(b.tweetUserScreenName)
-  )
+    (a, b) =>
+      b.count - a.count ||
+      a.tweetUserScreenName.localeCompare(b.tweetUserScreenName),
+  );
 
   // Add rank
   const ranked = sorted.map((item, index) => ({
     ...item,
     rank: index + 1,
-  }))
+  }));
 
-  return Response.json({ data: snakecaseKeys(ranked) })
+  return Response.json({ data: snakecaseKeys(ranked) });
 }

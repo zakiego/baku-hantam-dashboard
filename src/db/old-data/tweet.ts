@@ -1,27 +1,27 @@
-import type { SchemaAddTweet } from '@/app/dashboard/(internal)/tweets/schema'
-import { dbClient, dbSchema } from '@/db'
-import { OLD_DATA } from '@/db/old-data/data'
-import { createSlug } from '@/utils/string'
-import { getTweetId, validateTweetUrl } from '@/utils/twitter'
-import { eq } from 'drizzle-orm'
-import { getTweet } from 'react-tweet/api'
+import type { SchemaAddTweet } from "@/app/dashboard/(internal)/tweets/schema";
+import { dbClient, dbSchema } from "@/db";
+import { OLD_DATA } from "@/db/old-data/data";
+import { createSlug } from "@/utils/string";
+import { getTweetId, validateTweetUrl } from "@/utils/twitter";
+import { eq } from "drizzle-orm";
+import { getTweet } from "react-tweet/api";
 
 export const actionAddTweet = async (props: SchemaAddTweet) => {
-  const url = validateTweetUrl(props.url)
+  const url = validateTweetUrl(props.url);
   if (!url) {
     return {
       ok: false,
-      message: '❌ Invalid tweet url',
-    }
+      message: "❌ Invalid tweet url",
+    };
   }
 
-  const tweet = await getTweet(getTweetId(props.url))
+  const tweet = await getTweet(getTweetId(props.url));
 
   if (!tweet) {
     return {
       ok: false,
       message: "❌ Couldn't fetch tweet",
-    }
+    };
   }
 
   const data = await dbClient
@@ -38,16 +38,16 @@ export const actionAddTweet = async (props: SchemaAddTweet) => {
       tweetData: tweet,
     })
     .onConflictDoNothing()
-    .returning()
+    .returning();
 
   return {
     ok: true,
-    message: '🎉 Tweet added successfully',
-  }
-}
+    message: "🎉 Tweet added successfully",
+  };
+};
 
 const main = async () => {
-  console.log('Adding tweets...')
+  console.log("Adding tweets...");
 
   // await dbClient.delete(dbSchema.tweets)
 
@@ -65,37 +65,41 @@ const main = async () => {
   // })
 
   OLD_DATA.map(async (topics) => {
-    const slug = createSlug(topics.title)
+    const slug = createSlug(topics.title);
 
-    const t = await dbClient.select().from(dbSchema.topics).where(eq(dbSchema.topics.slug, slug)).limit(1)
+    const t = await dbClient
+      .select()
+      .from(dbSchema.topics)
+      .where(eq(dbSchema.topics.slug, slug))
+      .limit(1);
 
     topics.tweets.map(async (tweet) => {
       const isInserted = await dbClient
         .select()
         .from(dbSchema.tweets)
         .where(eq(dbSchema.tweets.tweetId, getTweetId(tweet)))
-        .limit(1)
+        .limit(1);
 
       if (isInserted.length > 0) {
-        console.log(`Tweet ${tweet} already exists 😉`)
-        return
+        console.log(`Tweet ${tweet} already exists 😉`);
+        return;
       }
 
       const resp = await actionAddTweet({
-        url: tweet.replace('twitter.com', 'x.com'),
+        url: tweet.replace("twitter.com", "x.com"),
         topicId: t[0].id,
-      })
+      });
 
       if (resp.ok) {
-        console.log(`Tweet ${tweet} added successfully ✅`)
-        return
+        console.log(`Tweet ${tweet} added successfully ✅`);
+        return;
       }
 
-      console.log(`Error adding tweet ${tweet}: ${resp.message}`)
-    })
-  })
-}
+      console.log(`Error adding tweet ${tweet}: ${resp.message}`);
+    });
+  });
+};
 
 main().catch((err) => {
-  console.error(`Error adding topics: ${err}`)
-})
+  console.error(`Error adding topics: ${err}`);
+});

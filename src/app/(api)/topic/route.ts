@@ -1,12 +1,12 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-import { dbClient } from '@/db'
-import snakecaseKeys from 'snakecase-keys'
+import { dbClient } from "@/db";
+import snakecaseKeys from "snakecase-keys";
 
 export async function GET() {
   const data = await dbClient.query.topics.findMany({
     where(fields, operators) {
-      return operators.eq(fields.isPublic, true)
+      return operators.eq(fields.isPublic, true);
     },
     with: {
       tweets: {
@@ -29,44 +29,51 @@ export async function GET() {
       createdAt: true,
     },
     orderBy(fields, operators) {
-      return operators.desc(fields.updatedAt)
+      return operators.desc(fields.updatedAt);
     },
-  })
+  });
 
-  const modifiedData = data.map(({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
-    const allPeoples: {
-      id: string
-      userId: string
-      profileImageUrl: string
-    }[] = []
+  const modifiedData = data.map(
+    ({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
+      const allPeoples: {
+        id: string;
+        userId: string;
+        profileImageUrl: string;
+      }[] = [];
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    peoples.forEach((item) => {
-      allPeoples.push({
-        id: item.id,
-        userId: item.tweetUserId,
-        profileImageUrl: item.tweetProfileImageUrl,
-      })
-
-      if (item.quotedTweetId && item.quotedTweetUserId && item.quotedTweetUserProfileImageUrl) {
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      peoples.forEach((item) => {
         allPeoples.push({
-          id: item.quotedTweetId,
-          userId: item.quotedTweetUserId,
-          profileImageUrl: item.quotedTweetUserProfileImageUrl,
-        })
-      }
-    })
+          id: item.id,
+          userId: item.tweetUserId,
+          profileImageUrl: item.tweetProfileImageUrl,
+        });
 
-    const uniquePeoples = allPeoples.filter(
-      (item, index, self) => self.findIndex((t) => t.userId === item.userId) === index
-    )
+        if (
+          item.quotedTweetId &&
+          item.quotedTweetUserId &&
+          item.quotedTweetUserProfileImageUrl
+        ) {
+          allPeoples.push({
+            id: item.quotedTweetId,
+            userId: item.quotedTweetUserId,
+            profileImageUrl: item.quotedTweetUserProfileImageUrl,
+          });
+        }
+      });
 
-    return {
-      ...rest,
-      tweetsCount: peoples.length,
-      peoples: uniquePeoples,
-    }
-  })
+      const uniquePeoples = allPeoples.filter(
+        (item, index, self) =>
+          self.findIndex((t) => t.userId === item.userId) === index,
+      );
 
-  return Response.json({ data: snakecaseKeys(modifiedData) })
+      return {
+        ...rest,
+        tweetsCount: peoples.length,
+        peoples: uniquePeoples,
+      };
+    },
+  );
+
+  return Response.json({ data: snakecaseKeys(modifiedData) });
 }
