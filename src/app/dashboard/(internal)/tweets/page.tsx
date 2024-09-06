@@ -102,7 +102,7 @@ export default async function Tweets() {
               <TableCell>{formatDate(tweet.updatedAt)}</TableCell>
               <TableCell>{formatDate(tweet.cachedAt)}</TableCell> */}
               <TableCell>
-                <TableCellActionTweet id={tweet.tweetId} />
+                <TableCellActionTweet tweetId={tweet.tweetId} />
               </TableCell>
             </TableRow>
           ))}
