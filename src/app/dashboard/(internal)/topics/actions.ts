@@ -8,37 +8,61 @@ import { desc, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 export const actionAddTopic = async (props: SchemaAddTopic) => {
-  const data = await dbClient
-    .insert(dbSchema.topics)
-    .values({
-      title: props.title,
-      slug: props.title.toLowerCase().replace(/\s/g, '-'),
-      description: props.description,
-    })
-    .returning()
+  try {
+    const data = await dbClient
+      .insert(dbSchema.topics)
+      .values({
+        title: props.title,
+        slug: props.slug.toLowerCase().replace(/\s/g, '-'),
+        description: props.description,
+      })
+      .returning()
 
-  revalidatePath('/dashboard/topics', 'page')
+    revalidatePath('/dashboard/topics', 'page')
 
-  return '🎉 Topic added successfully'
+    return {
+      ok: true,
+      message: 'Topic added successfully',
+    }
+  } catch (error) {
+    const errorMessages = error instanceof Error ? error.message : JSON.stringify(error)
+
+    return {
+      ok: false,
+      message: `Failed to add topic: ${errorMessages}`,
+    }
+  }
 }
 
 export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
-  const data = await dbClient
-    .update(dbSchema.topics)
-    .set({
-      title: props.title,
-      slug: props.title.toLowerCase().replace(/\s/g, '-'),
-      description: props.description,
-      updatedAt: new Date(),
-      summary: props.summary,
-      summary_ai: props.summary_ai,
-      ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
-    })
-    .where(eq(dbSchema.topics.id, id))
+  try {
+    const data = await dbClient
+      .update(dbSchema.topics)
+      .set({
+        title: props.title,
+        slug: props.slug.toLowerCase().replace(/\s/g, '-'),
+        description: props.description,
+        updatedAt: new Date(),
+        summary: props.summary,
+        summary_ai: props.summary_ai,
+        ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
+      })
+      .where(eq(dbSchema.topics.id, id))
 
-  revalidatePath(`/dashboard/topics/${id}`)
+    revalidatePath(`/dashboard/topics/${id}`)
 
-  return '🎉 Topic updated successfully'
+    return {
+      ok: true,
+      message: 'Topic updated successfully',
+    }
+  } catch (error) {
+    const errorMessages = error instanceof Error ? error.message : JSON.stringify(error)
+
+    return {
+      ok: false,
+      message: `Failed to update topic: ${errorMessages}`,
+    }
+  }
 }
 
 export const actionGetTopics = async () => {

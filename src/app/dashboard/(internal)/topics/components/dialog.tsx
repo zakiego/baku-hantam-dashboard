@@ -27,7 +27,13 @@ export function DialogAddTopic() {
   })
 
   const onSubmit = handleSubmit(async (data) => {
-    await actionAddTopic(data)
+    const { ok, message } = await actionAddTopic(data)
+    if (!ok) {
+      toast.error(message)
+      return
+    }
+    setIsOpen(false)
+    toast.success(message)
     reset()
   })
 
@@ -72,8 +78,8 @@ export function DialogAddTopic() {
             disabled={!formState.isValid || formState.isSubmitting}
             onClick={() => {
               onSubmit()
-              setIsOpen(false)
             }}
+            type="button"
           >
             {formState.isSubmitting ? 'Adding...' : 'Submit'}
           </Button>
@@ -104,8 +110,13 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
   })
 
   const onSubmit = handleSubmit(async (data) => {
-    const resp = await actionUpdateTopic(props.data.id, data)
-    toast.success(resp)
+    const { ok, message } = await actionUpdateTopic(props.data.id, data)
+    if (!ok) {
+      toast.error(message)
+      return
+    }
+    setIsOpen(false)
+    toast.success(message)
     reset()
   })
 
@@ -188,10 +199,10 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
             Cancel
           </Button>
           <Button
+            type="button"
             disabled={!formState.isValid || formState.isSubmitting}
             onClick={() => {
               onSubmit()
-              setIsOpen(false)
             }}
           >
             {formState.isSubmitting ? 'Updating...' : 'Submit'}
