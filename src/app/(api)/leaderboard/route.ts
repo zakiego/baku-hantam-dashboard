@@ -67,5 +67,5 @@ export async function GET() {
     rank: index + 1,
   }));
 
-  return Response.json({ data: snakecaseKeys(ranked) });
+  return Response.json({ ok: true, data: snakecaseKeys(ranked) });
 }

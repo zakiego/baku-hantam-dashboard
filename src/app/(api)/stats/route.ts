@@ -23,6 +23,7 @@ export async function GET() {
   const usersSet = new Set(tweets.map((tweet) => tweet.tweetUserId));
 
   return Response.json({
+    ok: true,
     data: snakecaseKeys({
       users: usersSet.size,
       topics: topics.length,

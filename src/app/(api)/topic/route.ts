@@ -75,5 +75,8 @@ export async function GET() {
     },
   );
 
-  return Response.json({ data: snakecaseKeys(modifiedData) });
+  return Response.json({
+    ok: true,
+    data: snakecaseKeys(modifiedData),
+  });
 }

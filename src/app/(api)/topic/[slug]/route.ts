@@ -38,5 +38,12 @@ export async function GET(request: Request, context: { params: Params }) {
     },
   });
 
-  return Response.json({ data: snakecaseKeys(data || {}) });
+  if (!data) {
+    return Response.json(
+      { ok: false, message: "Topic not found" },
+      { status: 404 },
+    );
+  }
+
+  return Response.json({ ok: true, data: snakecaseKeys(data || {}) });
 }

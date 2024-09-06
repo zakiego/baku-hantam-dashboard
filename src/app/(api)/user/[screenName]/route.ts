@@ -68,6 +68,7 @@ export async function GET(request: Request, context: { params: Params }) {
   );
 
   return Response.json({
+    ok: true,
     data: snakecaseKeys({
       profile,
       tweets: tweetsFromPublicTopics,
