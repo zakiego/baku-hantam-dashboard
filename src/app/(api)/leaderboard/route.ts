@@ -4,21 +4,27 @@ import { dbClient } from "@/db";
 import snakecaseKeys from "snakecase-keys";
 
 export async function GET() {
-  const data = await dbClient.query.tweets.findMany({
+  const data = await dbClient.query.topics.findMany({
     where(fields, operators) {
       return operators.eq(fields.isPublic, true);
     },
-    columns: {
-      tweetId: true,
-      tweetUserId: true,
-      tweetProfileImageUrl: true,
-      tweetUserName: true,
-      tweetUserScreenName: true,
+    with: {
+      tweets: {
+        columns: {
+          tweetId: true,
+          tweetUserId: true,
+          tweetProfileImageUrl: true,
+          tweetUserName: true,
+          tweetUserScreenName: true,
+        },
+      },
     },
   });
 
+  const tweets = data.flatMap((topic) => topic.tweets);
+
   const tweetCounts = Object.values(
-    data.reduce(
+    tweets.reduce(
       (
         acc: Record<
           string,

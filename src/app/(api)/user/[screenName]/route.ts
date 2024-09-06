@@ -44,16 +44,22 @@ export async function GET(request: Request, context: { params: Params }) {
           id: true,
           title: true,
           slug: true,
+          isPublic: true,
         },
       },
     },
   });
+
+  const tweetsFromPublicTopics = tweets.filter(
+    (tweet) => tweet.topic?.isPublic,
+  );
 
   // get unique topics from tweets
   const topics = tweets.reduce(
     (acc: Record<string, (typeof tweets)[number]["topic"]>, tweet) => {
       const topic = tweet.topic;
       if (!topic) return acc;
+      if (!topic.isPublic) return acc;
 
       acc[topic.id] = topic;
       return acc;
@@ -62,6 +68,10 @@ export async function GET(request: Request, context: { params: Params }) {
   );
 
   return Response.json({
-    data: snakecaseKeys({ profile, tweets, topics: Object.values(topics) }),
+    data: snakecaseKeys({
+      profile,
+      tweets: tweetsFromPublicTopics,
+      topics: Object.values(topics),
+    }),
   });
 }
