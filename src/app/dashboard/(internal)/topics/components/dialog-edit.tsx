@@ -8,8 +8,9 @@ import {
 import { type SchemaAddTopic, schemaAddTopic } from '@/app/dashboard/(internal)/topics/schema'
 import { Button } from '@/components/button'
 import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/components/dialog'
-import { ErrorMessage, Field, Label } from '@/components/fieldset'
+import { Description, ErrorMessage, Field, Label } from '@/components/fieldset'
 import { Input } from '@/components/input'
+import { Switch, SwitchField } from '@/components/switch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -22,7 +23,7 @@ interface DialogEditTopicProps {
 export function DialogEditTopic(props: DialogEditTopicProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { register, handleSubmit, formState, reset } = useForm<SchemaAddTopic>({
+  const { register, handleSubmit, formState, reset, setValue } = useForm<SchemaAddTopic>({
     resolver: zodResolver(schemaAddTopic),
     reValidateMode: 'onChange',
     defaultValues: {
@@ -32,6 +33,7 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
       createdAt: props.data.createdAt.toISOString().split('T')[0],
       summary: props.data.summary || '',
       summary_ai: props.data.summary_ai || '',
+      isPublic: props.data.isPublic,
     },
   })
 
@@ -87,6 +89,17 @@ export function DialogEditTopic(props: DialogEditTopicProps) {
               <ErrorMessage>{formState.errors.description?.message.toString()}</ErrorMessage>
             )}
           </Field>
+
+          <SwitchField>
+            <Label>Visibility</Label>
+            <Description>Make the topic public or private</Description>
+            <Switch
+              onChange={(e) => {
+                setValue('isPublic', e)
+              }}
+              defaultChecked={props.data.isPublic}
+            />
+          </SwitchField>
 
           {/* 
           <Field>

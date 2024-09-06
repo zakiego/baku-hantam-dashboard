@@ -45,6 +45,7 @@ export const actionUpdateTopic = async (id: string, props: SchemaAddTopic) => {
         updatedAt: new Date(),
         summary: props.summary,
         summary_ai: props.summary_ai,
+        isPublic: props.isPublic,
         ...(props.createdAt && { createdAt: new Date(props.createdAt) }),
       })
       .where(eq(dbSchema.topics.id, id))

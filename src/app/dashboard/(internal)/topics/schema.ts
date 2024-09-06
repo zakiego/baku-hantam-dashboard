@@ -7,6 +7,7 @@ export const schemaAddTopic = z.object({
   summary: z.string().optional(),
   summary_ai: z.string().optional(),
   createdAt: z.string().date().optional(),
+  isPublic: z.boolean().optional(),
 })
 
 export type SchemaAddTopic = z.infer<typeof schemaAddTopic>
