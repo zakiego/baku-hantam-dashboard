@@ -29,7 +29,7 @@ export async function GET() {
       createdAt: true,
     },
     orderBy(fields, operators) {
-      return operators.desc(fields.updatedAt);
+      return operators.desc(fields.createdAt);
     },
   });
 
