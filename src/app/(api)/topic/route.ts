@@ -33,47 +33,45 @@ export async function GET() {
     },
   });
 
-  const modifiedData = data.map(
-    ({ tweets: peoples, updatedAt, createdAt, ...rest }) => {
-      const allPeoples: {
-        id: string;
-        userId: string;
-        profileImageUrl: string;
-      }[] = [];
+  const modifiedData = data.map(({ tweets: peoples, ...rest }) => {
+    const allPeoples: {
+      id: string;
+      userId: string;
+      profileImageUrl: string;
+    }[] = [];
 
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      peoples.forEach((item) => {
-        allPeoples.push({
-          id: item.id,
-          userId: item.tweetUserId,
-          profileImageUrl: item.tweetProfileImageUrl,
-        });
-
-        if (
-          item.quotedTweetId &&
-          item.quotedTweetUserId &&
-          item.quotedTweetUserProfileImageUrl
-        ) {
-          allPeoples.push({
-            id: item.quotedTweetId,
-            userId: item.quotedTweetUserId,
-            profileImageUrl: item.quotedTweetUserProfileImageUrl,
-          });
-        }
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    peoples.forEach((item) => {
+      allPeoples.push({
+        id: item.id,
+        userId: item.tweetUserId,
+        profileImageUrl: item.tweetProfileImageUrl,
       });
 
-      const uniquePeoples = allPeoples.filter(
-        (item, index, self) =>
-          self.findIndex((t) => t.userId === item.userId) === index,
-      );
+      if (
+        item.quotedTweetId &&
+        item.quotedTweetUserId &&
+        item.quotedTweetUserProfileImageUrl
+      ) {
+        allPeoples.push({
+          id: item.quotedTweetId,
+          userId: item.quotedTweetUserId,
+          profileImageUrl: item.quotedTweetUserProfileImageUrl,
+        });
+      }
+    });
 
-      return {
-        ...rest,
-        tweetsCount: peoples.length,
-        peoples: uniquePeoples,
-      };
-    },
-  );
+    const uniquePeoples = allPeoples.filter(
+      (item, index, self) =>
+        self.findIndex((t) => t.userId === item.userId) === index,
+    );
+
+    return {
+      ...rest,
+      tweetsCount: peoples.length,
+      peoples: uniquePeoples,
+    };
+  });
 
   return Response.json({
     ok: true,
